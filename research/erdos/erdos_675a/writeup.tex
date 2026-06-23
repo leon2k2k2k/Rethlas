@@ -1,0 +1,207 @@
+\documentclass{amsart}
+\input{preamble.tex}
+
+\title[\Erdos Problem \#675(a)]{\Erdos Problem \#675, subquestion (a): \\ {\tiny a super-polynomial lower bound on local periods of the sums-of-two-squares set}}
+\author{Yu Leon Liu}
+\address{1 Oxford St, Cambridge, MA 02139}
+\email{yuleonliu@math.harvard.edu}
+
+\begin{document}
+
+\begin{abstract}
+Let $E$ be the set of sums of two squares. We prove that, for every fixed
+$0 < c < 1/10$ and all sufficiently large $n$, every positive integer $t$
+satisfying the $n$-translation property for $E$ (that is, $a \in E
+\Longleftrightarrow a + t \in E$ for all $1 \leq a \leq n$) must exceed
+$\exp(n^c)$. We do not address the existence of such $t$, that is,
+whether $E$ has the translation property.
+\end{abstract}
+
+    \maketitle
+
+\begin{definition}\label{def:trans}
+    For a subset $A \subset \N$ and positive integer $n$, we say that a positive integer $t$ satisfies the $n$-translation property for $A$ if
+    \[
+    a\in A \quad \Longleftrightarrow \quad a+t \in A
+    \]
+    holds for all $1 \leq a \leq n$. We say that $A$ has the \textit{translation property} if for every $n > 0$ there exists $t$ satisfying the $n$-translation property for $A$.
+\end{definition}
+
+Problem 675~\cite{bloom675} has three parts:
+\begin{quote}
+\begin{itemize}[leftmargin=1.2em]
+\item[(a)] Does the set of sums of two squares have the translation property?
+\item[(b)] If we partition all primes into $P\sqcup Q$ such that each part contains $\gg x/\log x$ many primes $\le x$ for all large $x$, does the set of integers only divisible by primes from $P$ have the translation property?
+\item[(c)] If $A$ is the set of squarefree numbers, how fast does the minimal such $t_n$ satisfying the $n$-translation property of $A$ grow? Is $t_n>\exp(n^c)$ for some constant $c>0$?
+\end{itemize}
+\end{quote}
+
+Here we make the following progress on part (a) concerning sums of two squares:
+\begin{theorem}\label{thm:main-thm}
+    Let $E$ be the set of positive integers expressible as $a^2 + b^2$ with $a, b \in \mathbb Z_{\geq 0}$. For every $0 < c < \frac{1}{10}$, there exists $N_c$ such that for all $n \geq N_c$, every $t$ satisfying the $n$-translation property for $E$ satisfies
+\[
+    t > \exp(n^c).
+\]
+\end{theorem}
+\begin{remark}
+    We \emph{do not} prove part (a), i.e., that the set $E$ satisfies the translation property. We do show that if $E$ has the translation property, then $t$ grows faster than $\exp(n^c)$ as in \cref{thm:main-thm}.
+\end{remark}
+\begin{remark}
+    We discuss potential improvements on the constant $\frac{1}{10}$ in \cref{rem:end}.
+\end{remark}
+
+First we note that 
+\begin{equation}\label{eq:E-p-3}
+    E = \{m \geq 1 \mid v_p(m) \text{ is even for all primes } p \equiv 3 \pmod 4\}.
+\end{equation}
+We have the following lemma:
+\begin{lemma}\label{lem:1}
+    Let $p \equiv 3 \pmod 4$ and $n \geq 1$. Suppose $t$ satisfies the $n$-translation property for $E$. Then for any $a\in E \cap [1,n]$ with
+    \begin{equation*}
+        a \equiv  -t \pmod p,
+    \end{equation*}
+    we have
+    \begin{equation*}
+        a \equiv -t \pmod{p^2}.
+    \end{equation*}
+\end{lemma}
+\begin{proof}
+    By construction we have $p \mid a + t$, and the $n$-translation property implies that $a + t \in E$. It follows from \eqref{eq:E-p-3} that $p^2 \mid a + t$, and thus
+    \begin{equation*}
+        a  \equiv -t \pmod{p^2}.
+    \end{equation*}
+\end{proof}
+
+Next, we show that any sufficiently small prime $p \equiv 3 \pmod 4$ must divide $t$. The idea is to find $a,b$ that are both $\equiv -t \pmod p$ but differ modulo $p^2$.
+\begin{lemma}\label{lem:2}
+   Let $p \equiv 3 \pmod 4$ be prime. There exists $N_p$ such that,
+   for every $n \geq N_p$ and every $t \geq 1$ satisfying the $n$-translation property for $E$, we have $p \mid t$.
+\end{lemma}
+
+\begin{proof}
+    For each nonzero residue class $r \pmod p$, the residues $r$ and $r + p$ differ modulo $p^2$. By the Chinese remainder theorem, there are unique classes $u_{r,0}, u_{r,1} \pmod{4p^2}$ satisfying
+\begin{align*}
+u_{r,0}&\equiv 1\pmod 4,\quad u_{r,0}\equiv r\pmod{p^2},\\
+u_{r,1}&\equiv 1\pmod 4,\quad u_{r,1}\equiv r+p\pmod{p^2}.
+\end{align*}
+    Since $r \not\equiv 0 \pmod p$ and each $u_{r,j} \equiv 1 \pmod 4$, both $u_{r,0}$ and $u_{r,1}$ are coprime to $4p^2$.
+    By Dirichlet's theorem on primes in arithmetic progressions,
+    there exist primes $\ell_{r,0}$ and $\ell_{r,1}$ with
+\[
+\ell_{r,0}\equiv u_{r,0}\pmod{4p^2}, \qquad \ell_{r,1}\equiv u_{r,1}\pmod{4p^2}.
+\]
+Each $\ell_{r,j} \equiv 1 \pmod 4$, hence lies in $E$ by \eqref{eq:E-p-3}. Let
+\begin{equation*}
+    N_p \coloneqq \max_{\substack{1 \leq r \leq p-1 \\ j \in \{0,1\}}} \ell_{r,j}.
+\end{equation*}
+
+Now suppose $n \geq N_p$ and $t$ has the $n$-translation property for $E$, and assume for contradiction that $p \nmid t$. Pick $r \in \{1, \dots, p-1\}$ with $r \equiv -t \pmod p$. The witnesses $\ell_{r,0}, \ell_{r,1} \in E \cap [1,n]$ both satisfy $\ell_{r,j} \equiv r \equiv -t \pmod p$, so \cref{lem:1} forces $\ell_{r,j} \equiv -t \pmod{p^2}$ for $j \in \{0,1\}$. In particular $\ell_{r,0} \equiv \ell_{r,1} \pmod{p^2}$. But by construction $\ell_{r,0} \equiv r \pmod{p^2}$ and $\ell_{r,1} \equiv r + p \pmod{p^2}$, so $\ell_{r,0} \not\equiv \ell_{r,1} \pmod{p^2}$, a contradiction. It follows that $p \mid t$.
+\end{proof}
+
+\begin{remark}
+    In the proof above we chose $\ell_{r,j}$ to be primes because that guarantees they lie in $E$. In fact, any choice of $\ell_{r,0}, \ell_{r,1} \in E$ satisfying
+    \begin{equation*}
+        \ell_{r,0} \equiv r \pmod{p^2}, \qquad \ell_{r,1} \equiv r + p \pmod{p^2}
+    \end{equation*}
+    suffices, and a careful choice could yield a better bound.
+\end{remark}
+
+Next, we bound $N_p$ as a function of $p$:
+\begin{theorem}[Linnik~\cite{linnik1944}]\label{thm:A}
+   There exist constants $C > 0$ and $L > 0$ such that for any modulus $q \geq 2$ and any residue class $a$ with $1 \leq a \leq q-1$ and $\gcd(a,q) = 1$, the smallest prime $p_0 \equiv a \pmod q$ satisfies $p_0 \leq C q^L$.
+\end{theorem}
+The best current unconditional value is $L \leq 5$, due to Xylouris~\cite{xylouris2011}.
+
+\begin{proof}[Proof of \cref{thm:main-thm}]
+    Let $p \equiv 3 \pmod 4$ be a prime.
+    Applying \cref{thm:A} with $q = 4p^2$, we see that we can choose primes $\ell_{r,j}$ with
+    \[ \ell_{r,j} \leq C (4p^2)^L.\]
+    Thus, with $A = 4^L C$, we have
+    \begin{equation*}
+        N_p \leq A p^{2L}.
+    \end{equation*}
+    In particular, if $p \leq (n/A)^{1/(2L)}$, then $n \geq N_p$, so any $t$ satisfying the $n$-translation property for $E$ has $p \mid t$ by \cref{lem:2}.
+
+    Let $y \coloneqq (n/A)^{1/(2L)}$. It follows that
+    \[
+\prod_{\substack{p\le y\\ p\equiv 3 \,(\bmod\, 4)}} p \;\Big|\; t.
+\]
+By the prime number theorem in arithmetic progressions (see e.g.\ Davenport~\cite{davenport2000}), the primes $\equiv 3 \pmod 4$ have density $\tfrac12$ among the odd primes, so
+\begin{equation}\label{eq:pnt-ap}
+    \sum_{\substack{p\le y\\ p\equiv 3 \,(\bmod\, 4)}} \log p \;\sim\;
+    \frac{y}{2} \qquad \text{as } y \to \infty.
+\end{equation}
+Fix a constant $c_1 \in (0, \tfrac12)$, say $c_1 = \tfrac14$. By \eqref{eq:pnt-ap}, there exists a threshold $y_0 = y_0(c_1)$ such that for all $y \geq y_0$,
+\begin{equation}\label{eq:pnt-bound}
+    \sum_{\substack{p\le y\\ p\equiv 3 \,(\bmod\, 4)}} \log p \;\geq\; c_1 y.
+\end{equation}
+Set $N_1 \coloneqq A \cdot y_0^{2L}$, so that $n \geq N_1$ guarantees $y = (n/A)^{1/(2L)} \geq y_0$. For all such $n$, combining the divisibility above with \eqref{eq:pnt-bound} gives
+\begin{equation*}
+    \log t \;\geq\; \sum_{\substack{p\le y\\ p\equiv 3 \,(\bmod\, 4)}} \log p \;\geq\; c_1 y \;=\; K n^{1/(2L)},
+\end{equation*}
+where $K \coloneqq c_1 A^{-1/(2L)}$.
+
+Now fix any $0 < c < 1/(2L)$; since $L \leq 5$, every $0 < c < 1/10$ satisfies this. Since the exponent gap $1/(2L) - c$ is positive, the inequality $K n^{1/(2L)} > n^c$, equivalently $n^{1/(2L) - c} > K^{-1}$, holds for all $n \geq N_2(c) \coloneqq \lfloor K^{-2L/(1 - 2Lc)} \rfloor + 1$. Setting
+\[
+N_c \coloneqq \max\bigl(\lceil N_1 \rceil,\; N_2(c)\bigr),
+\]
+we conclude that for every $n \geq N_c$,
+\[
+\log t \;\geq\; K n^{1/(2L)} \;>\; n^c, \qquad \text{i.e., } t > \exp(n^c). \qedhere
+\]
+\end{proof}
+
+\begin{remark}\label{rem:end}
+The constant $\tfrac{1}{10}$ in \cref{thm:main-thm} arose as $\tfrac{1}{2L}$ with $L \leq 5$ from \cite{xylouris2011}. There are two potential ways to improve it.
+
+\smallskip
+\noindent\emph{First, by improving Linnik's constant.} Under the Generalized Riemann Hypothesis, one has $p_{\min}(a, q) \ll \varphi(q)^2 (\log q)^2$, which sets Linnik's constant to $L \leq 2 + \epsilon$ in \cref{thm:A}. This pushes the conclusion of \cref{thm:main-thm} to $t > \exp(n^c)$ with $0 < c < \tfrac{1}{4}$. The Linnik conjecture, $p_{\min}(a, q) \ll_\varepsilon q^{1+\varepsilon}$ for every $\varepsilon > 0$, would further yield $t > \exp(n^c)$ for every $0 < c < \tfrac{1}{2}$.
+
+\smallskip
+\noindent\emph{Second, by relaxing the choice of witnesses.} As noted in the remark following \cref{lem:2}, we never used that the witnesses $\ell_{r,j}$ are prime; any $\ell_{r,j} \in E$ with the prescribed residue $\pmod{p^2}$ suffices. Bounding the smallest such $\ell_{r,j}$ is a question about $E$ in arithmetic progressions; sharp bounds here would likely improve the constant further.
+\end{remark}
+
+\section*{Acknowledgements}
+The proof in this note was discovered with the assistance of OpenAI's
+Codex together with the Rethlas open-source agentic
+mathematics-research pipeline. The strategy is directly inspired by
+Ho Boon Suan's proof of the analogous super-polynomial lower bound for
+the squarefree subquestion (c) of \Erdos Problem 675~\cite{hobs2026}.
+All mathematical arguments and claims in the final manuscript were
+independently verified by the author, who takes full responsibility
+for the paper.
+
+\begin{thebibliography}{9}
+
+\bibitem{bloom675}
+T.~F.~Bloom,
+\emph{\Erdos Problem \#675},
+\url{https://www.erdosproblems.com/675},
+accessed 10 May 2026.
+
+\bibitem{hobs2026}
+Ho Boon Suan,
+\emph{A squarefree lower bound for \Erdos Problem 675},
+note, 18 April 2026,
+\url{https://boonsuan.github.io/erdos675_squarefree.pdf}.
+
+\bibitem{davenport2000}
+H.~Davenport,
+\emph{Multiplicative Number Theory}, 3rd ed.,
+Graduate Texts in Mathematics, vol.~74, Springer-Verlag, New York, 2000.
+Revised and with a preface by Hugh L.~Montgomery.
+
+\bibitem{linnik1944}
+U.~V.~Linnik,
+\emph{On the least prime in an arithmetic progression. I. The basic theorem},
+Rec. Math. [Mat. Sbornik] N.S. \textbf{15(57)} (1944), no.~2, 139--178.
+
+\bibitem{xylouris2011}
+T.~Xylouris,
+\emph{\"{U}ber die Nullstellen der Dirichletschen $L$-Funktionen und die kleinste Primzahl in einer arithmetischen Progression},
+PhD thesis, Rheinische Friedrich-Wilhelms-Universit\"{a}t Bonn, 2011;
+also published as \emph{Bonner Mathematische Schriften} \textbf{404}, Universit\"{a}t Bonn, Mathematisches Institut, Bonn, 2011.
+
+\end{thebibliography}
+
+\end{document}

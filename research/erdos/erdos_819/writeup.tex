@@ -1,0 +1,494 @@
+\documentclass[11pt]{amsart}
+\input{preamble.tex}
+
+\title[\Erdos \#819: reflected Sidon lower bound]{\Erdos \#819 \\
+{\tiny reflected Sidon lower bound}}
+
+\author{Yu Leon Liu}
+\address{1 Oxford St, Cambridge, MA 02139}
+\email{yuleonliu@math.harvard.edu}
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+We sharpen the lower bound for \Erdos{} Problem \#819: writing $f(N) := \max\{|(A+A)\cap[1,N]| : A\subseteq\{1,\ldots,N\},\ |A|=\lfloor\sqrt N\rfloor\}$, we prove $\liminf_{N\to\infty} f(N)/N \geq (16\sqrt 2 - 17)/12 \approx 0.4690$, improving the classical \Erdos--Freud bound of $3/8 = 0.375$ and closing most of the gap to the trivial upper bound $f(N)/N \le 1/2 + o(1)$. The construction is a reflected two-copy of an asymptotically maximum Sidon set, obtained by thinning a Bose--Chowla set, with a small uniform random shift; the proof uses Pikhurko's uniformity lemma.
+\end{abstract}
+
+\maketitle
+
+\Erdos Problem \#819~\cite{bloom819} concerns the maximum size of the
+sumset of a square-root-density subset of $[1,N]$:
+\begin{definition}\label{def:f}
+For $N\geq 1$, set
+\[
+f(N) \;:=\; \max\Bigl\{\;\bigl|(A+A)\cap[1,N]\bigr| \;:\; A\subseteq\{1,\ldots,N\},\ |A|=\lfloor N^{1/2}\rfloor\Bigr\}.
+\]
+\end{definition}
+Since $|A+A| \le \binom{|A|+1}{2}$ for any set $A$, we have the trivial upper bound
+\[
+f(N)\;\leq\;\binom{\lfloor\sqrt N\rfloor+1}{2}\;\leq\;N/2+O(\sqrt N).
+\]
+The classical lower bound, due to \Erdos{} and Freud~\cite{ErdosFreud1991},
+\begin{equation}\label{eq:ef}
+f(N)\;\geq\;\bigl(\tfrac{3}{8}-o(1)\bigr)\,N,
+\end{equation}
+is given by an explicit construction (a union of an arithmetic progression and a structured complement).
+
+In this note we sharpen the lower bound:
+\begin{theorem}\label{thm:cor}
+We have
+\[
+\liminf_{N\to\infty}\frac{f(N)}{N}
+\;\geq\;
+\frac{16\sqrt 2-17}{12}\;\approx\;0.4690.
+\]
+\end{theorem}
+
+The proof outline is as follows: the construction is a reflected two-copy of a maximum Sidon set with some displacement, for the subsequence $N = 4q^2$ with $q$ a sufficiently large positive integer. We control the overlap of the Sidon set and its reflected copy by Pikhurko's uniformity lemma~\cite[Lemma~10]{Pikhurko2006} for asymptotically maximum Sidon sets, which is the core technical statement of this note. Using random-shift optimization, we get a closed form formula~\eqref{eq:Fu-formula} for the expected score, which we optimize (\cref{cor:optimize-u}) to obtain the bound. Lastly, an interpolation argument (proof of \cref{thm:cor}) lifts from the subsequence $N = 4q^2$ to all sufficiently large $N$. This construction and proof strategy are inspired by those of Pikhurko~\cite[Lemma~12]{Pikhurko2006}.
+
+We start the proof by recalling the notion of a Sidon set:
+\begin{definition}\label{def:sidon}
+A finite set $S$ is a \emph{Sidon} set if all ordered sums $a + b$ with $a,b \in S$ are distinct up to the unordered pairs $\{a,b\}$.
+\end{definition}
+
+The core technical input we need is the following uniformity statement due to Pikhurko~\cite[Lemma~10]{Pikhurko2006}. It is a common generalization of an earlier result of Erd\H{o}s--Freud~\cite[Lemma~1]{ErdosFreud1991} (uniformity in subintervals) and of Lindstr\"om~\cite{Lindstrom1998} (uniformity in residue classes).
+\begin{lemma}[Pikhurko's uniformity lemma]\label{lem:pikhurko}
+Let $q$ be large and let $S \subset [0,M]$ be an asymptotically maximum Sidon set of size $q$, so $M = (1+o(1))\,q^2$. Fix an integer $m \geq 1$. Then, uniformly in subintervals $I \subseteq [0,M]$ and in residue classes $\ell \pmod m$,
+\[
+\bigl| S \cap I \cap (\ell + m\Z) \bigr|
+\;=\;
+\frac{|I|}{m\,q} \;+\; o(q),
+\]
+where the $o(q)$ depends only on $m$ and on $q\to\infty$.
+\end{lemma}
+\begin{remark}
+Conceptually, $S$ has density $\approx 1/q$ in $[0,M]$, and the lemma says this density is preserved on every macroscopic subinterval and every residue class simultaneously, with additive error $o(q)$. (This is the form of Pikhurko's~\cite[Lemma~10]{Pikhurko2006} statement obtained by the substitution $n = M$, $\sqrt n = q$.)
+\end{remark}
+
+We will need such asymptotically maximum Sidon sets to exist for every large $q$ (not merely along a sparse subsequence such as prime powers). This is classical:
+\begin{lemma}[existence of asymptotically maximum Sidon sets]\label{lem:existence}
+For every sufficiently large integer $q$, there exists a Sidon set $S \subset [0, M]$ with $|S| = q$ and $M = (1+o(1))q^2$.
+\end{lemma}
+\begin{proof}
+Let $p$ be the smallest prime with $p \geq q$; by the prime number theorem, $p = (1+o(1))q$. The Bose--Chowla construction~\cite{BoseChowla1962} produces a Sidon set $S^* \subset [0, p^2-2]$ with $|S^*| = p$. Take any subset $S \subseteq S^*$ with $|S| = q$ and set $M := \max S$; any subset of a Sidon set is Sidon, so $S$ is Sidon. Then $M \leq p^2 - 2 = (1+o(1))q^2$. Conversely, the classical upper bound for Sidon sets in $[0, M]$ (Erd\H{o}s--Tur\'an; see also Lindstr\"om~\cite{Lindstrom1998}), applied to $S$, gives
+\[
+q \leq M^{1/2} + O(M^{1/4}),
+\]
+and hence $M \geq (1-o(1))q^2$.
+\end{proof}
+
+We now consider the sumset and difference set of $S$:
+\begin{definition}
+We write
+\[ \Sigma \coloneqq S + S, \quad \Delta \coloneqq S - S. \]
+By the Sidon property,
+\[ |\Sigma| = \binom{q + 1}{2} = \frac{q(q + 1)}{2}, \quad
+|\Delta| = q(q-1) + 1. \]
+\end{definition}
+
+\Cref{lem:pikhurko} allows us to give a density description of $\Sigma$ and $\Delta$ on macroscopic windows. Recall that $N = 4q^2$, so $2M/N \to 1/2$. Let us define the triangular densities:
+\begin{equation}\label{eq:phi-psi}
+\phi(y)\;:=\;\begin{cases} y, & 0\le y\le 1/2,\\ 1-y, & 1/2\le y\le 1,\\ 0, & \text{otherwise,}\end{cases}
+\qquad
+\psi(y)\;:=\;\max\bigl(0,\;1-2|y|\bigr).
+\end{equation}
+We illustrate $\phi$ and $\psi$ below:
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=3.5]
+  % axes
+  \draw[->] (-0.75, 0) -- (1.2, 0) node[right] {$y$};
+  \draw[->] (0, -0.15) -- (0, 1.2);
+  % phi: tent on [0,1] peaking at (1/2, 1/2)
+  \draw[thick, blue] (-0.7, 0) -- (0, 0) -- (0.5, 0.5) -- (1, 0) -- (1.15, 0);
+  % psi: tent on [-1/2, 1/2] peaking at (0, 1)
+  \draw[thick, red] (-0.7, 0) -- (-0.5, 0) -- (0, 1) -- (0.5, 0) -- (1.15, 0);
+  % legend (top-right corner, boxed)
+  \draw (0.68, 0.82) rectangle (1.05, 1.13);
+  \draw[thick, blue] (0.72, 1.05) -- (0.85, 1.05) node[right, black] {$\phi$};
+  \draw[thick, red]  (0.72, 0.9)  -- (0.85, 0.9)  node[right, black] {$\psi$};
+  % x-ticks
+  \draw (0.5, 0.015) -- (0.5, -0.015) node[below] {\scriptsize $\tfrac{1}{2}$};
+  \draw (1, 0.015) -- (1, -0.015) node[below] {\scriptsize $1$};
+  \draw (-0.5, 0.015) -- (-0.5, -0.015) node[below] {\scriptsize $-\tfrac{1}{2}$};
+  % y-ticks
+  \draw (0.015, 0.5) -- (-0.015, 0.5) node[left] {\scriptsize $\tfrac{1}{2}$};
+  \draw (0.015, 1) -- (-0.015, 1) node[left] {\scriptsize $1$};
+\end{tikzpicture}
+\caption{The triangular densities $\phi$ (blue) and $\psi$ (red).}
+\label{fig:phi-psi}
+\end{figure}
+
+We now derive density descriptions for $\Sigma$ and $\Delta$ on macroscopic windows.
+\begin{lemma}\label{lem:sum-diff-density}
+  Let $q$ be large, and $S \subset [0,M]$ be an asymptotically maximum Sidon set of size $q$, so $M = (1 + o(1))q^2$, and $N = 4q^2$. Fix $\eta > 0$ and $x \in \R$, and let $J\subset\Z$ be the integer interval $[\lfloor x \cdot N/2 \rfloor,\;\lfloor x \cdot N/2 \rfloor+\lfloor \eta N/2 \rfloor)$. It has size $|J| = \lfloor \eta N/2 \rfloor$. Then for any fixed integer $m \geq 1$ and any residue class $\ell \pmod{m}$,
+  \[
+   \begin{aligned}
+      \frac{|(S + S) \cap J \cap (\ell + m\Z)|}{|J|/m} &= \phi(x) + O(\eta) + o_q(1), \\
+      \frac{|(S-S) \cap J \cap (\ell + m\Z)|}{|J|/m} &= \psi(x) + O(\eta) + o_q(1).
+   \end{aligned}
+  \]
+  Here the implicit constant in $O(\eta)$ is absolute (i.e., independent of the other parameters), and $o_q(1)$ is a quantity that, for each fixed $\eta > 0$ and $m$, tends to $0$ as $q \to \infty$ \emph{uniformly in $x \in \mathbb R$ and $\ell \pmod m$}.
+\end{lemma}
+
+\begin{proof}
+We first prove the assertion for $\Sigma = S+S$. Put $L := N/2$, so that $M = (1/2 + o(1))L$. Fix $0 < \rho \ll \eta^2$, and partition $[0, M]$ into half-open intervals $I_i$ of length $\rho L$, except possibly for one final shorter interval. The number of intervals is $O_\rho(1)$, and \cref{lem:pikhurko} gives, uniformly in $i$ and in each residue class $r \pmod m$,
+\[
+|S \cap I_i \cap (r + m\Z)| = \frac{|I_i|}{m\, q} + o(q).
+\]
+
+Let
+\[
+T_\ell(J) := \#\{(a,b) \in S^2 : a + b \in J,\ a + b \equiv \ell \pmod m\}.
+\]
+For each pair of boxes $I_i, I_j$, summing over residue classes $r_i + r_j \equiv \ell \pmod m$ gives
+\[
+\sum_{\substack{r_i, r_j \pmod m \\ r_i + r_j \equiv \ell}}
+|S \cap I_i \cap (r_i + m\Z)| \cdot |S \cap I_j \cap (r_j + m\Z)|
+\;=\; \frac{|I_i|\,|I_j|}{m\,q^2} + o(q^2),
+\]
+uniformly in $i, j$. Summing over the boxes for which $I_i + I_j \subseteq J$ gives a lower bound for $T_\ell(J)$, while summing over the boxes for which $I_i + I_j$ meets $J$ gives an upper bound. The difference between the two box sums is supported on a boundary strip of width $O(\rho L)$ and contributes $O((\rho/\eta) |J|) = O(\eta |J|)$ by our choice $\rho \ll \eta^2$.
+
+Thus the box count is a Riemann-sum approximation to
+\[
+\frac{1}{m\,q^2} \cdot \mathrm{area}\,\{(s,t) \in [0,M]^2 : s + t \in J\}.
+\]
+The cross-section length of the square $[0,M]^2$ at $s + t = yL$ is $L\phi(y) + o(L)$ uniformly in $y$, since $M = (1/2 + o(1))L$. Therefore, since $J$ has normalized length $\eta + o(1)$ and $\phi$ is Lipschitz,
+\[
+\mathrm{area}\,\{(s,t) \in [0,M]^2 : s + t \in J\} \;=\; L\,|J|\bigl(\phi(x) + O(\eta) + o_q(1)\bigr).
+\]
+Using $q^2 = N/4 = L/2$, we obtain
+\[
+T_\ell(J) \;=\; \frac{2\,|J|}{m}\,\bigl(\phi(x) + O(\eta) + o_q(1)\bigr).
+\]
+
+Now pass from ordered to unordered pairs. Each unordered pair $\{a,b\}$ with $a \neq b$ contributes two ordered pairs; the diagonal $a = b$ contributes at most $q = o(|J|)$. Hence the number of unordered pairs $\{a,b\} \subset S$ with $a+b \in J$ and $a+b \equiv \ell \pmod m$ is
+\[
+\frac{|J|}{m}\bigl(\phi(x) + O(\eta) + o_q(1)\bigr).
+\]
+By the Sidon property, unordered pairs give distinct sums, so
+\[
+|\Sigma \cap J \cap (\ell + m\Z)| \;=\; \frac{|J|}{m}\bigl(\phi(x) + O(\eta) + o_q(1)\bigr),
+\]
+which proves the first estimate.
+
+The proof for $\Delta = S - S$ is the same with the ordered-pair count
+\[
+U_\ell(J) := \#\{(a,b) \in S^2 : a - b \in J,\ a - b \equiv \ell \pmod m\}.
+\]
+The corresponding continuous cross-section length at $a - b = yL$ is $L(1/2 - |y|)_+ + o(L)$, so after dividing by $q^2 = L/2$ the density is $\psi(y) = \max(0, 1 - 2|y|)$. Hence
+\[
+U_\ell(J) \;=\; \frac{|J|}{m}\bigl(\psi(x) + O(\eta) + o_q(1)\bigr).
+\]
+The map $(a,b) \mapsto a - b$ is injective on $\{a \neq b\}$ by the Sidon property; the zero difference contributes $q$ ordered pairs but only one element of $\Delta$, an $O(q) = o(|J|)$ discrepancy. Therefore
+\[
+|\Delta \cap J \cap (\ell + m\Z)| \;=\; \frac{|J|}{m}\bigl(\psi(x) + O(\eta) + o_q(1)\bigr).
+\]
+\end{proof}
+
+We now turn to the construction, which is probabilistic; we derandomize at the end.
+Fix any $u \in (0, 1/4)$ and any $\eta \in (0, u/2)$.
+Let $S \subset [0,M]$ be an asymptotically maximum Sidon set of size $q$ with $M = (1 + o(1))q^2$, and $N = 4q^2$. Let $a,b$ be independent integers chosen uniformly at random from $\{1, \ldots, \lfloor \eta N/2 \rfloor\}$. Define
+\[
+   B := a + S, \quad C := N/2 + \lfloor uN/2 \rfloor - b - S, \quad A := B \cup C.
+\]
+\begin{observation}\label{obs:A-size}
+   Note that
+   \[
+   B \subset \bigl[1,\,\bigl(\tfrac{1}{2}+\eta+o(1)\bigr)\tfrac{N}{2}\bigr], \quad
+   C \subset \bigl[\bigl(\tfrac{1}{2}+u-\eta-o(1)\bigr)\tfrac{N}{2},\;(1+u)\tfrac{N}{2}\bigr].
+   \]
+   Both are subsets of $[1,N]$, so $A \subset [1,N]$. Moreover, $B$ and $C$ are disjoint for $q$ sufficiently large:
+   \begin{equation}\label{eq:max-B-min-C}
+   \max B \leq \bigl(\tfrac{1}{2}+\eta+o(1)\bigr)\tfrac{N}{2} \;<\; \bigl(\tfrac{1}{2}+u-\eta-o(1)\bigr)\tfrac{N}{2} \leq \min C
+   \end{equation}
+   since $\eta < u/2$. Hence $|A| = |B|+|C| = q + q = 2q = \sqrt{N}$.
+\end{observation}
+Observe that $A + A = (B + B) \cup (B + C) \cup (C + C)$. We compute the pointwise densities:
+\begin{lemma}\label{lem:point-densities}
+Uniformly for $v\in[1,N]$, with $x:=2v/N$,
+\begin{align}
+\Pr(v\in B+B) &\;=\;\phi(x)+O(\eta)+o_q(1),\label{eq:density-BB}\\
+\Pr(v\in C+C) &\;=\;\phi(2+2u-x)+O(\eta)+o_q(1),\label{eq:density-CC}\\
+\Pr(v\in B+C) &\;=\;\psi(x-1-u)+O(\eta)+o_q(1),\label{eq:density-BC}\\
+\Pr\bigl(v\in(B+B)\cap(B+C)\bigr) &\;=\;\phi(x)\,\psi(x-1-u)+O(\eta)+o_q(1),\label{eq:density-BB-BC}\\
+\Pr\bigl(v\in(B+C)\cap(C+C)\bigr) &\;=\;\psi(x-1-u)\,\phi(2+2u-x)+O(\eta)+o_q(1).\label{eq:density-BC-CC}
+\end{align}
+Moreover, for $q$ sufficiently large (depending on $\eta$ and $u$), $(B+B) \cap (C+C) = \emptyset$; in particular, $\Pr(v\in(B+B)\cap(C+C)) = 0$ and $\Pr(v\in(B+B)\cap(B+C)\cap(C+C)) = 0$.
+\end{lemma}
+\begin{proof}
+Let $h := \lfloor \eta N/2 \rfloor$. We first prove \eqref{eq:density-BB}--\eqref{eq:density-BC}.
+
+For $B+B$,
+\[
+v \in B+B \quad\Longleftrightarrow\quad v - 2a \in \Sigma.
+\]
+As $a$ ranges over $\{1, \ldots, h\}$, the quantity $v - 2a$ ranges over an interval of length $2h + O(1) = \eta N + O(1)$, but only through one fixed parity class. Therefore we apply \cref{lem:sum-diff-density} to $\Sigma$ with modulus $m = 2$ and window length $2h$. The factor of $2$ in the window length cancels the factor of $1/2$ from the parity restriction. Since the left endpoint of this window differs from $v$ by $O(\eta N)$, the Lipschitz continuity of $\phi$ gives
+\[
+\Pr(v \in B+B) = \phi(x) + O(\eta) + o_q(1).
+\]
+
+Similarly,
+\[
+v \in C+C \quad\Longleftrightarrow\quad N + \lfloor uN \rfloor - v - 2b \in \Sigma
+\]
+(up to an $O(1)$ shift from the floor). Again $b$ gives a window of length $2h + O(1)$ in one fixed parity class, so \cref{lem:sum-diff-density} with $m = 2$ gives
+\[
+\Pr(v \in C+C) = \phi(2 + 2u - x) + O(\eta) + o_q(1).
+\]
+
+For $B+C$, write $t := N/2 + \lfloor uN/2 \rfloor$. Then
+\[
+v \in B+C \quad\Longleftrightarrow\quad v - t - a + b \in \Delta.
+\]
+For each fixed $a$, as $b$ varies over $\{1, \ldots, h\}$, the quantity $v - t - a + b$ ranges over an interval of length $h + O(1)$ with no parity restriction. Hence \cref{lem:sum-diff-density} applied to $\Delta$ with $m = 1$, together with $a/(N/2) = O(\eta)$ and Lipschitz continuity of $\psi$, gives
+\[
+\Pr(v \in B+C \mid a) = \psi(x - 1 - u) + O(\eta) + o_q(1)
+\]
+uniformly in $a$. Averaging over $a$ gives \eqref{eq:density-BC}.
+
+\emph{Disjointness of $B+B$ and $C+C$ for $q$ large.} We have $\max(B+B) = 2\max B \le (1 + 2\eta + o(1))N/2$ while $\min(C+C) = 2\min C \ge (1 + 2u - 2\eta - o(1))N/2$. Since $\eta < u/2$ strictly, the gap $2u - 4\eta > 0$ is fixed; for $q$ large enough that the $o(1)$ correction is smaller than this gap, $\max(B+B) < \min(C+C)$ strictly.
+
+\emph{Pair-overlap factorizations \eqref{eq:density-BB-BC} and \eqref{eq:density-BC-CC}.} The event $\{v \in B+B\}$ is determined by $a$ alone. Conditional on $a = a_0$, the event $\{v \in B+C\}$ becomes $v - t - a_0 + b \in \Delta$, which is again a single window query for $\Delta$ of length $h$ in $b$. By \cref{lem:sum-diff-density} (with $m = 1$), uniformly in $a_0$,
+\[
+\Pr(v \in B+C \mid a = a_0) = \psi(x - 1 - u) + O(\eta) + o_q(1),
+\]
+because the $a_0$ shift of the window center is $a_0/(N/2) = O(\eta)$. Therefore
+\[
+\Pr\bigl(v \in (B+B) \cap (B+C)\bigr) = \Pr(v \in B+B) \cdot \bigl(\psi(x-1-u) + O(\eta) + o_q(1)\bigr),
+\]
+and combining with \eqref{eq:density-BB} (and absorbing products of error terms into $O(\eta) + o_q(1)$) gives \eqref{eq:density-BB-BC}.
+
+The proof of \eqref{eq:density-BC-CC} is identical with $a$ and $b$ interchanged: conditional on $b = b_0$, the event $\{v \in C+C\}$ is determined by $b_0$, while the conditional probability of $\{v \in B+C\}$ is again $\psi(x-1-u) + O(\eta) + o_q(1)$. Together with \eqref{eq:density-CC}, this gives \eqref{eq:density-BC-CC}.
+\end{proof}
+
+\begin{remark}
+\Cref{lem:point-densities} says that the pointwise densities of $B+B$, $B+C$, $C+C$ and their pairwise intersections are approximately constant (up to error $O(\eta) + o_q(1)$) on macroscopic windows.
+\end{remark}
+
+We are now ready for our main theorem:
+\begin{theorem}\label{thm:main}
+  With the random construction above and $N = 4q^2$, for any $u \in (0, 1/4)$ and $\eta \in (0, u/2)$ we have
+  \[
+   \mathbb{E}(|(A + A) \cap [1,N]|) \geq \tfrac{N}{2} \cdot F(u) - O(\eta N) - o(N),
+  \]
+  where
+  \begin{equation}\label{eq:Fu-formula}
+   F(u) \coloneqq 1 - 2u^2 - \frac{(1 - 2u)^3}{12}.
+  \end{equation}
+\end{theorem}
+\begin{proof}
+   By \cref{obs:A-size} we have $A \subset [1,N]$ and $|A| = 2q$. For $q$ sufficiently large, $(B+B) \cap (C+C) = \emptyset$ by \cref{lem:point-densities}, and a fortiori the triple intersection also vanishes. Applying inclusion-exclusion to $A + A = (B + B) \cup (B + C) \cup (C + C)$,
+\begin{align*}
+\Pr(v\in A+A) &= \Pr(v\in B+B)+\Pr(v\in C+C)+\Pr(v\in B+C) \\
+&\quad - \Pr(v\in(B+B)\cap(B+C)) - \Pr(v\in(B+C)\cap(C+C)).
+\end{align*}
+   By \cref{lem:point-densities}, uniformly in $v$,
+   \[
+      \Pr(v \in A + A) = (p + d + r - pd - dr)(x) + O(\eta) + o_q(1),
+   \]
+   where we use the shorthand:
+   \[
+      p(x) = \phi(x), \quad d(x) = \psi(x - 1 - u), \quad r(x) = \phi(2 + 2u - x).
+   \]
+   Summing over $v \in [1, N]$ yields a Riemann sum in $x = 2v/N \in [0,2]$,
+   \begin{equation}\label{eq:integral-bound}
+       \mathbb{E}\bigl(|(A + A) \cap [1, N]|\bigr) \;\geq\; \frac{N}{2} \int_0^2 (p + d + r - pd - dr)\, dx - O(\eta N) - o(N).
+   \end{equation}
+   It remains to compute those integrals for $u \in (0, 1/4)$.
+Recall that the area under $\phi$ on $[0,1]$ is $\int_0^1\phi(y)\,dy=1/4$, and the area under $\psi$ on $[-1/2,1/2]$ is $\int_{-1/2}^{1/2}\psi(y)\,dy=1/2$. Hence
+\[
+\int_0^2 p\,dx \;=\; \int_0^1\phi(y)\,dy \;=\; \tfrac{1}{4}, \qquad
+\int_0^2 d\,dx \;=\; \int_{-1/2}^{1/2}\psi(y)\,dy \;=\; \tfrac{1}{2}.
+\]
+For $r$, use the substitution $y=2+2u-x$:
+\[
+\int_0^2 r\,dx \;=\; \int_{2u}^{2+2u}\phi(y)\,dy \;=\; \int_0^1\phi(y)\,dy-\int_0^{2u}y\,dy \;=\; \tfrac{1}{4}-2u^2,
+\]
+valid since $\phi$ vanishes outside $[0,1]$ and $2u\le 1/2$. Thus
+\begin{equation}\label{eq:raw-sum-integral}
+\int_0^2(p+d+r)\,dx \;=\; \tfrac{1}{4}+\tfrac{1}{2}+\tfrac{1}{4}-2u^2 \;=\; 1-2u^2.
+\end{equation}
+
+For the overlaps, $pd$ is supported on
+$\mathrm{supp}(\phi(x))\cap\mathrm{supp}(\psi(x-1-u))=[1/2+u,1]$, where
+$\phi(x)=1-x$ and $\psi(x-1-u)=2x-(1+2u)$. With the substitution
+$y=x-(1/2+u)$,
+\[
+\int_0^2 pd \,dx
+\;=\; \int_0^{1/2-u}\!\!\bigl((1-2u)y-2y^2\bigr)\,dy
+\;=\;\frac{(1/2-u)^3}{3} \;=\; \frac{(1-2u)^3}{24}.
+\]
+By the reflection symmetry $x\mapsto 2(1+u)-x$ (which swaps $p$ with $r$ while fixing $d$, hence swaps $pd$ with $dr$ while preserving the integral),
+\begin{equation}\label{eq:overlap-integrals}
+\int_0^2 pd \,dx \;=\; \int_0^2 dr \,dx \;=\; \frac{(1-2u)^3}{24}.
+\end{equation}
+
+Combining~\eqref{eq:raw-sum-integral} and~\eqref{eq:overlap-integrals},
+\[
+\int_0^2 \bigl(p+d+r-pd-dr\bigr)\,dx
+\;=\; 1-2u^2-\frac{(1-2u)^3}{12}
+\;=\; F(u).
+\]
+
+Substituting into~\eqref{eq:integral-bound} gives the displayed expectation bound.
+\end{proof}
+We now optimize $u$ to maximize $F(u)$:
+\begin{corollary}\label{cor:optimize-u}
+The maximum of $F(u)$ on $(0, 1/4)$ is achieved at $u^* = \tfrac{3}{2} - \sqrt{2} \approx 0.0858$, with value
+\[
+F(u^*) \;=\; \tfrac{16\sqrt 2-17}{6}.
+\]
+Setting $c := \tfrac{F(u^*)}{2} = \tfrac{16\sqrt 2-17}{12} \approx 0.4690$, by \cref{thm:main} we have
+\begin{equation}\label{eq:eq-cor}
+ \mathbb{E}\bigl(|(A + A) \cap [1, N]|\bigr) \;\geq\; N\cdot c - O(\eta N) - o(N).
+\end{equation}
+\end{corollary}
+\begin{proof}
+$F'(u) = -4u + \tfrac{(1-2u)^2}{2} = \tfrac{4u^2 - 12u + 1}{2}$. The roots are $u = \tfrac{3 \pm 2\sqrt 2}{2} = \tfrac{3}{2} \pm \sqrt 2$; only $u^* = \tfrac{3}{2} - \sqrt 2 \in (0, 1/4)$, and $F''(u) = -4 - 2(1-2u) < 0$ on this interval, so $u^*$ is the unique maximum. Direct substitution gives the displayed value of $F(u^*)$.
+\end{proof}
+
+\Cref{fig:pdr-three-u} illustrates the three density profiles $p, d, r$ at the three values $u = 0$, $u = u^* = \tfrac{3}{2}-\sqrt 2$, and $u = 1/4$. At $u = 0$ the supports of $d$ and $r$ overlap heavily with $p$ and $d$ respectively (large overlap defects, low score). At $u = 1/4$ the support of $r$ is pushed past $x = 2$ and gets truncated (also low score). The optimum $u = u^*$ balances these two failure modes.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[xscale=2.2,yscale=1.5]
+% --- u = 0 ---
+\begin{scope}
+  \draw[->] (-0.05, 0) -- (2.25, 0) node[right] {\scriptsize $x$};
+  \draw[->] (0, -0.08) -- (0, 1.15);
+  % p
+  \draw[thick, blue] (0,0) -- (0.5, 0.5) -- (1, 0);
+  % d (u=0): peak (1, 1) on [0.5, 1.5]
+  \draw[thick, red] (0.5, 0) -- (1, 1) -- (1.5, 0);
+  % r (u=0): peak (1.5, 0.5) on [1, 2]
+  \draw[thick, green!50!black] (1, 0) -- (1.5, 0.5) -- (2, 0);
+  \draw (2, 0.02) -- (2, -0.02) node[below] {\tiny $2$};
+  \draw (1, 0.02) -- (1, -0.02) node[below] {\tiny $1$};
+  \draw (0.02, 1) -- (-0.02, 1) node[left] {\tiny $1$};
+  \node at (1, -0.35) {$u=0$};
+\end{scope}
+% --- u = u_0 ~ 0.0858 ---
+\begin{scope}[xshift=2.8cm]
+  \draw[->] (-0.05, 0) -- (2.35, 0) node[right] {\scriptsize $x$};
+  \draw[->] (0, -0.08) -- (0, 1.15);
+  % p
+  \draw[thick, blue] (0,0) -- (0.5, 0.5) -- (1, 0);
+  % d (u=u_0): peak (1.086, 1) on [0.586, 1.586]
+  \draw[thick, red] (0.586, 0) -- (1.086, 1) -- (1.586, 0);
+  % r (u=u_0): peak (1.672, 0.5) on [1.172, 2.172]; truncate at x=2
+  \draw[thick, green!50!black] (1.172, 0) -- (1.672, 0.5) -- (2, 0.172);
+  \draw (2, 0.02) -- (2, -0.02) node[below] {\tiny $2$};
+  \draw (1, 0.02) -- (1, -0.02) node[below] {\tiny $1$};
+  \draw (0.02, 1) -- (-0.02, 1) node[left] {\tiny $1$};
+  \node at (1, -0.35) {$u=u^*$};
+\end{scope}
+% --- u = 1/4 ---
+\begin{scope}[xshift=5.6cm]
+  \draw[->] (-0.05, 0) -- (2.6, 0) node[right] {\scriptsize $x$};
+  \draw[->] (0, -0.08) -- (0, 1.15);
+  % p
+  \draw[thick, blue] (0,0) -- (0.5, 0.5) -- (1, 0);
+  % d (u=1/4): peak (1.25, 1) on [0.75, 1.75]
+  \draw[thick, red] (0.75, 0) -- (1.25, 1) -- (1.75, 0);
+  % r (u=1/4): peak (2, 0.5) on [1.5, 2.5], truncate at x=2 with height 0.5
+  \draw[thick, green!50!black] (1.5, 0) -- (2, 0.5);
+  \draw[thick, green!50!black, dashed] (2, 0.5) -- (2.5, 0);
+  \draw (2, 0.02) -- (2, -0.02) node[below] {\tiny $2$};
+  \draw (1, 0.02) -- (1, -0.02) node[below] {\tiny $1$};
+  \draw (0.02, 1) -- (-0.02, 1) node[left] {\tiny $1$};
+  \node at (1, -0.35) {$u=1/4$};
+\end{scope}
+% legend
+\begin{scope}[xshift=8.4cm, yshift=0.5cm]
+  \draw[thick, blue] (0,0.6) -- (0.2, 0.6) node[right, black] {\scriptsize $p=\phi(x)$};
+  \draw[thick, red] (0,0.3) -- (0.2, 0.3) node[right, black] {\scriptsize $d=\psi(x{-}1{-}u)$};
+  \draw[thick, green!50!black] (0,0) -- (0.2, 0) node[right, black] {\scriptsize $r=\phi(2{+}2u{-}x)$};
+\end{scope}
+\end{tikzpicture}
+\caption{The three local density profiles $p, d, r$ on $[0,2]$ at $u=0$, $u=u^*=\tfrac{3}{2}-\sqrt2\approx 0.0858$, and $u=1/4$. At $u=u^*$ the support of $r$ just begins to spill past $x=2$ (small truncation); at $u=1/4$ the truncation is substantial (dashed portion).}
+\label{fig:pdr-three-u}
+\end{figure}
+
+We are now ready to prove \cref{thm:cor}.
+\begin{proof}[Proof of \cref{thm:cor}]
+We first establish the bound
+\begin{equation}\label{eq:main}
+\liminf_{N\to\infty}\frac{f(N)}{N} \;\geq\; c \;\approx\; 0.4690
+\end{equation}
+along the subsequence $N = 4q^2$. Fix any $\eta \in (0, u^*/2)$. By \cref{cor:optimize-u}, for $q$ large,
+\[
+ \mathbb{E}\bigl(|(A + A) \cap [1, N_q]|\bigr) \geq N_q\cdot c - O(\eta N_q) - o(N_q),
+\]
+where the implicit constant in $O(\eta)$ is absolute and $o(N_q)$ vanishes as $q\to\infty$ (for fixed $\eta$). Pick, for each $q$, a realization $(a,b)$ achieving at least the expectation; this produces deterministic sets $A_q^{(\eta)} \subset [1, N_q]$ with $|A_q^{(\eta)}| = 2q$ and
+\[
+ |(A_q^{(\eta)} + A_q^{(\eta)}) \cap [1,N_q]| \geq c \cdot N_q - O(\eta N_q) - o(N_q).
+\]
+Dividing by $N_q$ and taking $\liminf_{q\to\infty}$ gives, for every $\eta \in (0, u^*/2)$,
+\[
+\liminf_{q\to\infty} \frac{f(N_q)}{N_q} \geq c - O(\eta).
+\]
+Since the $O(\eta)$ constant is absolute, letting $\eta \downarrow 0$ yields $\liminf_{q\to\infty} f(N_q)/N_q \geq c$, which is \eqref{eq:main} along the subsequence $N = 4q^2$.
+
+It remains to lift this bound to all $N$.
+Given any large $N$, set $q:=\lfloor\sqrt N/2\rfloor$, so that
+\begin{equation}\label{eq:subseq-bound}
+N_q=4q^2\;\leq\;N\;<\;4(q+1)^2=N_{q+1},\qquad N_{q+1}-N_q=8q+4=O(\sqrt N).
+\end{equation}
+In particular $N-N_q\leq 8q+4=o(N)$ and $q\to\infty$ as $N\to\infty$.
+
+Let $A_q \subset [1, N_q]$ be any admissible competitor for $f(N_q)$ (i.e., $|A_q| = 2q$). Since $A_q \subset [1, N_q] \subseteq [1, N]$ and $\lfloor\sqrt N\rfloor - 2q \in \{0, 1\}$, we may extend $A_q$ to a set $A := A_q \cup E$ with $|A| = \lfloor\sqrt N\rfloor$ and $A \subset [1, N]$ by adjoining at most one extra point. Adding points only enlarges the sumset, so $|(A+A)\cap[1,N]| \ge |(A_q+A_q)\cap[1,N_q]|$. Taking the maximum over $A_q$ gives $f(N) \ge f(N_q)$. Hence
+\[
+\frac{f(N)}{N}\;\geq\;\frac{f(N_q)}{N}
+\;=\;\frac{f(N_q)}{N_q}\cdot\frac{N_q}{N}
+\;\geq\;\bigl(c-o_q(1)\bigr)\cdot\bigl(1-o(1)\bigr)
+\;=\;c-o(1),
+\]
+where we used the subsequence bound $\liminf_{q\to\infty} f(N_q)/N_q \geq c$ in the second inequality. Taking $\liminf_{N\to\infty}$ gives the displayed inequality.
+\end{proof}
+
+
+\section*{Acknowledgements}
+The proof in this note was discovered with the assistance of OpenAI's
+GPT-5.5 together with the Rethlas open-source agentic
+mathematics-research pipeline. All mathematical arguments and claims
+in the final manuscript were independently verified by the author, who
+takes full responsibility for the paper.
+
+\begin{thebibliography}{9}
+
+\bibitem{bloom819}
+T.~F.~Bloom,
+\emph{\Erdos Problem \#819},
+\url{https://www.erdosproblems.com/819},
+accessed \today.
+
+\bibitem{ErdosFreud1991}
+P.~\Erdos and R.~Freud,
+\emph{On sums of a Sidon-sequence},
+J.\ Number Theory \textbf{38} (1991), no.~2, 196--205.
+
+\bibitem{Pikhurko2006}
+O.~Pikhurko,
+\emph{Dense edge-magic graphs and thin additive bases},
+Discrete Mathematics \textbf{306} (2006), 2097--2107.
+
+\bibitem{Singer1938}
+J.~Singer,
+\emph{A theorem in finite projective geometry and some applications to number theory},
+Trans.\ Amer.\ Math.\ Soc.\ \textbf{43} (1938), 377--385.
+
+\bibitem{BoseChowla1962}
+R.~C.~Bose and S.~Chowla,
+\emph{Theorems in the additive theory of numbers},
+Comment.\ Math.\ Helv.\ \textbf{37} (1962/63), 141--147.
+
+\bibitem{Lindstrom1998}
+B.~Lindstr\"om,
+\emph{Well distribution of Sidon sets in residue classes},
+J.\ Number Theory \textbf{69} (1998), 197--200.
+
+\end{thebibliography}
+
+\end{document}

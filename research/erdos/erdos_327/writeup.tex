@@ -1,0 +1,261 @@
+\documentclass{amsart}
+\input{preamble.tex}
+
+\title[Upper bounds for \Erdos\#327]{Upper Bounds for \Erdos Problem \#327 and its $k$-Variant}
+\author{Yu Leon Liu}
+\address{1 Oxford St, Cambridge, MA 02139}
+\email{yuleonliu@math.harvard.edu}
+
+\begin{document}
+
+\begin{abstract}
+Let $k \geq 1$, and let $f_k(N)$ denote the maximum size of a subset
+$A \subseteq \{1, \dots, N\}$ such that $a + b \nmid k\,a\,b$ for all
+distinct $a, b \in A$. Set
+\[
+\alpha_k \;\coloneqq\; \limsup_{N \to \infty} \frac{f_k(N)}{N}.
+\]
+We introduce a smooth--rough decomposition method that gives explicit
+upper bounds for $\alpha_k$. For each finite set of primes $P$ and integer
+cutoff $X \geq 1$, the bound reduces to a finite computation of the
+prefix-by-prefix maximum size of a $k$-admissible subset of the $P$-smooth
+integers up to $X$. Certified computations with
+$P = \{2, 3, 5, 7, 11, 13\}$ and $X = 2000$ give
+\[
+\alpha_1 \;\leq\; 0.7769, \qquad \alpha_2 \;\leq\; 0.7630.
+\]
+Both bounds improve van~Doorn's $25/28$ bound for \Erdos{}
+Problem~\#327.
+\end{abstract}
+
+\maketitle
+
+\Erdos{} Problem~\#327 asks how large a subset $A \subseteq [1, N]$ can be if no two distinct elements $a, b \in A$ satisfy $a + b \mid ab$, and asks a stronger variant with $a + b \nmid 2ab$. The odd integers show that the first problem has density at least $1/2$. The purpose of this note is to give explicit upper bounds for these densities using a finite computation on smooth numbers.
+
+\begin{definition}\label{def:admissible}
+Fix an integer $k \geq 1$. A subset $A \subseteq \mathbb{N}$ is said to be
+\emph{$k$-admissible} if
+\[
+a + b \;\nmid\; k\,a\,b \qquad \text{for all distinct } a, b \in A.
+\]
+\end{definition}
+
+\begin{definition}\label{def:fk}
+For integers $N, k \geq 1$, set
+\[
+f_k(N) \;\coloneqq\; \max\bigl\{\, |A| \;:\; A \subseteq \{1, \dots, N\},\ A \text{ is } k\text{-admissible}\,\bigr\},
+\]
+and define the asymptotic density
+\[
+\alpha_k \;\coloneqq\; \limsup_{N \to \infty} \frac{f_k(N)}{N} \;\in\; [0, 1].
+\]
+\end{definition}
+\begin{observation}
+The set of odd integers is $k$-admissible for all odd $k$. It follows that $\alpha_k \geq \frac{1}{2}$ for $k$ odd.
+\end{observation}
+
+\Erdos{} Problem \#327~\cite{bloom327} asks:
+
+\begin{quote}
+Suppose $A \subseteq \{1, \ldots, N\}$ is such that if $a, b \in A$ and
+$a \neq b$ then $a + b \nmid ab$. Can $A$ be `substantially more' than
+the odd numbers? What if $a, b \in A$ with $a \neq b$ implies
+$a + b \nmid 2ab$? Must $|A| = o(N)$?
+\end{quote}
+
+In our notation, the first question asks whether one can substantially improve on the lower bound $\alpha_1 \geq 1/2$ furnished by the odd integers ($f_1(N) \geq \lceil N/2 \rceil$). The second question asks whether $\alpha_2 = 0$.
+For $k = 1$, van~Doorn~\cite{vanDoorn} proved the upper bound
+\begin{equation}\label{eq:vandoorn}
+\alpha_1 \;\leq\; \tfrac{25}{28} \;\approx\; 0.8929.
+\end{equation}
+A trivial observation transfers this to all $k \geq 1$: if $a + b \mid ab$ then $a + b \mid k\,a\,b$, so every $k$-admissible set is also $1$-admissible. Hence $f_k(N) \leq f_1(N)$ and
+\begin{equation}\label{eq:vandoorn-k}
+\alpha_k \;\leq\; \tfrac{25}{28} \;\approx\; 0.8929 \qquad \text{for all } k \geq 1.
+\end{equation}
+The question whether $\alpha_2 = 0$ remains open.
+
+We investigate upper bounds for $\alpha_k$. Our main result is the following.
+
+\begin{theorem}\label{thm:A} We have the bounds
+\[
+\alpha_1 \;\leq\; 0.7769, \qquad \alpha_2 \;\leq\; 0.7630.
+\]
+\end{theorem}
+This follows directly from \cref{thm:main} applied at
+$P = \{2, 3, 5, 7, 11, 13\}$ and $X = 2000$, together with the numerical
+computation of $\Phi_{P, k}(X)$ recorded in \cref{tab:fiber}. The $\alpha_1$ bound improves van~Doorn's $25/28$ bound \eqref{eq:vandoorn}, and the $\alpha_2$ bound improves the inherited bound \eqref{eq:vandoorn-k}.
+
+To start we use the smooth--rough decomposition:
+\begin{definition}\label{def:P-smooth}
+   Let $P$ be a finite subset of primes.
+    A positive integer $n$ is $P$-\emph{smooth} if all of its prime factors are in $P$, and it is $P$-\emph{rough} if it is coprime to every prime in $P$. We denote by $S_P$ the set of $P$-smooth integers. In particular, $1 \in S_P$ vacuously.
+\end{definition}
+
+Then, given $P$, every positive integer $n$ uniquely decomposes as $n = m \cdot c$ where $c$ is $P$-smooth and $m$ is $P$-rough.
+
+\begin{observation}\label{obs:partition}
+   Let $A \subseteq \mathbb{N}$ be a finite set, and for each $P$-rough
+   integer $m$ define $A_m \coloneqq \{c \in S_P : m \cdot c \in A\}$.
+   The unique decomposition of integers into $P$-smooth and $P$-rough
+   parts gives the disjoint partition
+   \begin{equation}
+      A \;=\; \bigsqcup_{m \text{ $P$-rough}} m \cdot A_m.
+   \end{equation}
+\end{observation}
+
+\begin{lemma}\label{lem:1}
+   Let $A \subseteq [1, N]$ be $k$-admissible and $m$ a $P$-rough integer. Then $A_m$ is also $k$-admissible. 
+\end{lemma}
+
+\begin{proof}
+Let $c, d \in A_m$ be distinct. Then $mc, md \in A$ are distinct. If $c + d \mid k\,c\,d$, then
+\[
+   mc + md \;=\; m(c + d) \;\Bigm|\; m^2 \cdot k\,c\,d \;=\; k(mc)(md),
+\]
+contradicting the $k$-admissibility of $A$. Hence $c + d \nmid k\,c\,d$, so $A_m$ is $k$-admissible.
+\end{proof}
+
+Next we introduce a cutoff and the associated quantities.
+\begin{definition}
+   Let $X$ be a positive integer and $P$ a finite subset of primes. We define
+   \[
+      H_P(X) \;\coloneqq\; \sum_{\substack{c \in S_P \\ c \leq X}} \frac{1}{c}.
+   \]
+   We also set $H_P(\infty) \coloneqq \sum_{c \in S_P} 1/c$. By the Euler product formula, we have
+   \begin{equation}\label{eq:euler-prod}
+   \rho_P \coloneqq \prod_{p \in P} (1 - 1/p) = \left(H_P(\infty)\right)^{-1}.
+   \end{equation}
+\end{definition}
+
+We have the following estimate for $P$-rough numbers at most some cutoff $Y$:
+\begin{lemma}\label{lem:P-rough-estimate}
+   Let $P$ be a finite subset of primes and $Y > 0$. Then
+   \begin{equation}
+       \# \{m \leq Y : m \text{ is $P$-rough}\} = \rho_P \cdot Y + O (2^{|P|}),
+   \end{equation}
+   in particular, for a fixed $P$, the error is $O_P(1)$, hence $o(Y)$ as $Y \to \infty$.
+\end{lemma}
+\begin{proof}
+By inclusion--exclusion,
+\begin{equation}
+\# \{m \leq Y : m \text{ is $P$-rough}\}  \;=\; \sum_{S \subseteq P} (-1)^{|S|} \left\lfloor \frac{Y}{\prod_{p \in S} p} \right\rfloor.
+\end{equation}
+Replacing each floor by its argument introduces an error of $O(1)$ in each of the $2^{|P|}$ summands, giving
+\begin{equation}
+\begin{aligned}
+\# \{m \leq Y : m \text{ is $P$-rough}\} &\;=\; Y \sum_{S \subseteq P} \frac{(-1)^{|S|}}{\prod_{p \in S} p} + O(2^{|P|}) \\
+&\;=\; Y \prod_{p \in P} \left(1 - \tfrac{1}{p}\right) + O(2^{|P|}) \\
+&\;=\; \rho_P \cdot Y + O(2^{|P|}).
+\end{aligned}
+\end{equation}
+\end{proof}
+
+Next we define the key quantity $\Phi_{P,k}$.
+\begin{definition}\label{def:phi-X-K}
+   Let $P$ be a finite subset of primes and $X \geq 1$ an integer. List the elements of
+$S_P \cap [1, X]$ in increasing order as $c_1 < c_2 < \cdots < c_s$ (with $c_1 = 1$), and
+for each $1 \leq j \leq s$ define
+\[
+\beta_j \;\coloneqq\; \max\bigl\{\, |I| \;:\; I \subseteq \{c_1, \ldots, c_j\},\
+I \text{ is } k\text{-admissible}\,\bigr\},
+\]
+with the convention $\beta_0 \coloneqq 0$.
+We then set
+\begin{equation}\label{eq:phi-def}
+\Phi_{P,k}(X) \;\coloneqq\; \frac{\beta_s}{c_s} \;+\; \sum_{j=1}^{s-1} \beta_j \left( \frac{1}{c_j} - \frac{1}{c_{j+1}} \right).
+\end{equation}
+\end{definition}
+
+We are now ready for the main theorem:
+\begin{theorem}\label{thm:main}
+   For every integer $k \geq 1$, finite subset of primes $P$, and integer cutoff $X \geq 1$, we have
+   \[
+      \alpha_k \;\leq\; 1 \,-\, \rho_P \cdot \bigl( H_P(X) - \Phi_{P,k}(X) \bigr).
+   \]
+\end{theorem}
+\begin{proof}
+Take $N > 0$ and let $A \subseteq [1, N]$ be a $k$-admissible set.
+For every $P$-rough integer $m$, recall the set $A_m$ from \cref{obs:partition}. It is $k$-admissible by \cref{lem:1}.
+Exchanging the order of summation,
+\begin{equation}
+   \begin{aligned}
+      |A| = \sum_{m \text{ $P$-rough}} |A_m| = \sum_{m \text{ $P$-rough}} \sum_{c \in A_m} 1 = \sum_{c \in S_P} r(c) = \underbrace{\sum_{\substack{c \in S_P \\ c \leq X}} r(c)}_{\text{head}}
+       \;+\; \underbrace{\sum_{\substack{c \in S_P \\ X < c \leq N}} r(c)}_{\text{tail}},
+   \end{aligned}
+\end{equation}
+where $r(c) \coloneqq \# \{ m : m \text{ is $P$-rough}, \; cm \in A \}$.
+
+\smallskip\noindent\textbf{Tail.} Applying \cref{lem:P-rough-estimate} with $Y = N/c$, we have $r(c) \leq \rho_P(N/c) + O_P(1)$ for each $c$. Summed over $P$-smooth $c \leq N$, the accumulated error is $O_P\bigl( |S_P \cap [1, N]| \bigr) = O_P\bigl( (\log N)^{|P|} \bigr) = o(N)$ for fixed $P$, so
+\begin{equation}
+\begin{aligned}
+   \sum_{\substack{c \in S_P \\ X < c \leq N}} r(c) &\leq \rho_P N \sum_{\substack{c \in S_P \\ X < c \leq N}} \frac{1}{c} + o(N) \\
+   &\leq \rho_P N \sum_{\substack{c \in S_P \\ X < c}} \frac{1}{c} + o(N) \\
+   &= \rho_P N \big(H_P(\infty) - H_P(X)\big) + o(N) \\
+   &= N \big(1 - \rho_P H_P(X)\big) + o(N).
+\end{aligned}
+\end{equation}
+
+\smallskip\noindent\textbf{Head.} Here we parametrize by $m$ again:
+\begin{equation}\label{eq:head}
+\sum_{\substack{c \in S_P \\ c \leq X}} r(c) = \sum_{m \text{ $P$-rough}} |A_m \cap [1,X]|.
+\end{equation}
+Define $j^*(m) \coloneqq \max \{j \colon c_j \leq \min(X, N/m)\}$, with the convention that $j^*(m) = 0$ when $N/m < c_1 = 1$ (in which case $A_m \cap [1, X] = \emptyset$, consistent with $\beta_0 = 0$). It follows that $A_m \cap [1,X]$ is a $k$-admissible set contained in $\{c_1, \dots, c_{j^*(m)}\}$; the definition of $\beta_j$ in \cref{def:phi-X-K} implies that $|A_m \cap [1,X]| \leq \beta_{j^*(m)}$.
+
+Next we group $m$ by $j^*(m)$. By \cref{lem:P-rough-estimate}, for $1 \leq j \leq s-1$ the number of $P$-rough $m$ with $N/c_{j+1} < m \leq N/c_{j}$ is $\rho_P N (1/c_j - 1/c_{j+1}) + o(N)$; for $j = s$ the number of $P$-rough $m$ with $m \leq N/c_s$ is $\rho_P N/c_s + o(N)$. It follows from \cref{eq:head} that
+\begin{equation}
+\sum_{\substack{c \in S_P \\ c \leq X}} r(c) \leq \beta_s \rho_P N/c_s + \sum_{j =1}^{s-1} \beta_j \rho_P N \big(1/c_j - 1/c_{j+1}\big) + o(N)  = \rho_P N \Phi_{P,k}(X) + o(N).
+\end{equation}
+
+\smallskip\noindent\textbf{Combining.} Putting the head and tail together,
+\begin{equation}
+|A| \leq N\big(1 - \rho_P \cdot (H_P(X) - \Phi_{P,k}(X))\big) + o(N),
+\end{equation}
+and the result follows by dividing by $N$ and taking $N \to \infty$.
+\end{proof}
+
+We conclude with the finite computations used in \cref{thm:A}. For each choice of $P$, $X$, and $k$, we computed the prefix maxima $\beta_j$ appearing in \cref{def:phi-X-K} and then evaluated the bound in \cref{thm:main}. The resulting upper bounds are summarized in \cref{tab:fiber}. The computation script is available at \url{https://github.com/leon2k2k2k/leon2k2k2k.github.io/blob/master/erdos327_cert.py}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+$P$ & $X$ & $k=1$ bound & $k=2$ bound & $k=3$ bound \\
+\midrule
+$\{2,3\}$                  &   100  & 0.8631 & 0.8631 & 0.6686 \\
+$\{2,3,5\}$                &   200  & 0.8249 & 0.8188 & 0.6440 \\
+$\{2,3,5,7\}$              &   500  & 0.7990 & 0.7907 & 0.6224 \\
+$\{2,3,5,7\}$              &  1000  & 0.7915 & 0.7830 & 0.6148 \\
+$\{2,3,5,7,11\}$           &  1000  & 0.7870 & 0.7773 & 0.6149 \\
+$\{2,3,5,7,11,13,17,19\}$  &  1000  & 0.7895 & 0.7751 & 0.6271 \\
+$\{2,3,5,7,11,13\}$        &  2000  & \textbf{0.7769} & \textbf{0.7630} & \textbf{0.6089} \\
+\bottomrule
+\end{tabular}
+\caption{Upper bounds for $\alpha_k$ obtained from \cref{thm:main}. Note that
+the second-to-last row $(P = \{2, \ldots, 19\}, X = 1000)$ gives \emph{weaker}
+bounds than the bottom row $(P = \{2, \ldots, 13\}, X = 2000)$, illustrating
+that at this scale doubling the cutoff $X$ is more effective than adding
+further primes to $P$.}
+\label{tab:fiber}
+\end{table}
+
+\section*{Acknowledgements}
+Some computations and drafting were assisted by AI-based tools (OpenAI's GPT-5.5 in conjunction with the Rethlas open-source agentic mathematics-research pipeline). All mathematical arguments, computations, and claims in the final manuscript were independently checked by the author, who takes full responsibility for the work.
+
+\begin{thebibliography}{9}
+
+\bibitem{bloom327}
+T.~F.~Bloom,
+\emph{\Erdos{} Problem \#327},
+\url{https://www.erdosproblems.com/327},
+accessed 13 May 2026.
+
+\bibitem{vanDoorn}
+W.~van~Doorn,
+Forum comment on \Erdos{} Problem \#301
+(multiplicative-shift covering argument giving the $25/28$ upper bound),
+\url{https://www.erdosproblems.com/301},
+accessed 13 May 2026.
+
+\end{thebibliography}
+
+\end{document}

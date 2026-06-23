@@ -1,0 +1,302 @@
+\documentclass{amsart}
+\input{preamble.tex}
+
+\title[\Erdos Problem \#301]{\Erdos Problem \#301: \\ {\tiny an unconditional upper bound $f(N) \leq 0.8436\,N + o(N)$ via prefix fiber-LP with exact rational duality}}
+\author{Yu Leon Liu}
+\address{1 Oxford St, Cambridge, MA 02139}
+\email{yuleonliu@math.harvard.edu}
+
+\begin{document}
+
+\begin{abstract}
+Let $f(N)$ be the size of the largest $A \subseteq \{1, 2, \ldots, N\}$
+such that no distinct $a, b_1, \ldots, b_k \in A$ ($k \geq 2$) satisfy
+$1/a = 1/b_1 + \cdots + 1/b_k$. We prove $f(N) \leq (\alpha + o(1)) N$
+with an explicit positive rational $\alpha$ given by
+\[
+    \alpha \;=\; \frac{104\,423\,799\,557\,560\,865\,582\,416\,418\,633\,021}
+                       {123\,786\,557\,037\,604\,429\,979\,965\,194\,240\,000}
+    \;\approx\; 0.843\,579\,481\,137,
+\]
+improving the prior bound $f(N) \leq (25/28 + o(1)) N \approx 0.8929\,N$
+attributed to W.\ van Doorn. The argument is the classical fiber method:
+decompose $n \in [1, N]$ uniquely as $n = m \cdot c$ with $c$ a $P$-smooth
+integer and $m$ coprime to all primes in $P$; for each $m$, the elements
+$c$ with $m c \in A$ must form an independent set of the unit-fraction
+hypergraph on $P$-smooth integers; the per-prefix independence numbers
+are bounded by exact rational dual certificates for finite linear programs;
+the bound is then summed over prefix breakpoints. Our run uses
+$P = \{2, 3, 5, 7, 11, 13, 17, 19\}$, $h = 5000$, and relations of arity at
+most $k_{\max} = 4$. The bound applies to the unrestricted-$k$ version of
+the problem.
+\end{abstract}
+
+    \maketitle
+
+\begin{definition}\label{def:f}
+For $N \geq 1$, let $f(N)$ be the maximum size of a set $A \subseteq \{1, 2, \ldots, N\}$ such that there are no distinct elements $a, b_1, \ldots, b_k \in A$ with $k \geq 2$ and
+\[
+    \frac{1}{a} \;=\; \frac{1}{b_1} + \frac{1}{b_2} + \cdots + \frac{1}{b_k}.
+\]
+We call such an $A$ \emph{admissible}.
+\end{definition}
+
+Problem~301~\cite{bloom301} reads:
+\begin{quote}
+Let $f(N)$ be the size of the largest $A \subseteq \{1, \ldots, N\}$ such
+that there is no solution to
+$\tfrac{1}{a} = \tfrac{1}{b_1} + \cdots + \tfrac{1}{b_k}$ with distinct
+$a, b_1, \ldots, b_k \in A$. Estimate $f(N)$. In particular, is it true
+that $f(N) = (\tfrac{1}{2} + o(1)) N$?
+\end{quote}
+
+Prior to the present note the best published bounds are
+$N/2 \leq f(N) \leq (25/28 + o(1)) N$.
+The lower bound is trivial: take $A = (N/2, N]$, and observe that for any
+$a \in A$, $k$ further distinct elements $b_i \in A$ all exceed $N/2 \geq a/2$,
+forcing $\sum 1/b_i < k/(2a) \leq 1/a$ when $k \geq 2$, contradiction. The
+upper bound is due to W.~van Doorn (informal, recorded on \cite{bloom301}):
+for each integer $a$ coprime to $6$ the family
+$\{2a, 3a, 4a, 6a, 12a\} \cap [1, N]$ contains the relation
+$\tfrac{1}{a} = \tfrac{1}{2a} + \tfrac{1}{3a} + \tfrac{1}{6a}$, forcing at
+least one omission per such family; counting gives
+$f(N) \leq (25/28 + o(1)) N$. Our main theorem improves van Doorn's bound by
+approximately $0.05$.
+
+\begin{theorem}\label{thm:main}
+For every $N \geq 1$,
+\[
+    f(N) \;\leq\; (\alpha + o(1))\, N \qquad
+    \text{with } \alpha \;=\; \frac{104\,423\,799\,557\,560\,865\,582\,416\,418\,633\,021}
+                                    {123\,786\,557\,037\,604\,429\,979\,965\,194\,240\,000}
+    \;\approx\; 0.843\,579\,481.
+\]
+\end{theorem}
+
+\begin{remark}
+This does not resolve the conjecture $f(N) = (\tfrac{1}{2} + o(1)) N$. The
+fiber method we use has a structural ceiling, discussed in \cref{rem:end},
+that lies strictly above $\tfrac{1}{2}$.
+\end{remark}
+
+\section*{The prefix fiber method}
+
+Fix a finite set of primes $P$ and a positive integer $h$. Write
+\[
+    \rho_P \;\coloneqq\; \prod_{p \in P}\!\Bigl(1 - \frac{1}{p}\Bigr),
+    \qquad
+    S \;=\; S(P, h) \;\coloneqq\; \{c \in \mathbb{Z}_{\geq 1} : c \leq h,\; c \text{ is } P\text{-smooth}\},
+\]
+where $c$ is $P$-smooth iff every prime divisor of $c$ lies in $P$. Each
+positive integer $n$ has a unique decomposition $n = m \cdot c$ with
+$c$ $P$-smooth and $m$ coprime to $\prod P$.
+
+\begin{lemma}\label{lem:fiber}
+Fix $P$, $h$, and $k_{\max} \geq 2$. Let $H = H(P, h, k_{\max})$ be the hypergraph on vertex set $S$ whose hyperedges are the relations
+\[
+    \frac{1}{u} \;=\; \frac{1}{v_1} + \cdots + \frac{1}{v_k}, \qquad 2 \leq k \leq k_{\max},
+\]
+with $u, v_1, \ldots, v_k$ distinct elements of $S$. Let $A \subseteq [1, N]$
+be admissible. For every positive integer $m$ coprime to $\prod P$, define
+\[
+    I_m \;\coloneqq\; \{c \in S : m c \leq N \text{ and } m c \in A\}.
+\]
+Then for every hyperedge $E \in H$ with $m \cdot \max(E) \leq N$, $|I_m \cap E| \leq |E| - 1$.
+\end{lemma}
+
+\begin{proof}
+If $\{u, v_1, \ldots, v_k\} \subseteq I_m$, then $mu, mv_1, \ldots, mv_k$ are distinct elements of $A$ and
+\[
+    \frac{1}{mu} \;=\; \frac{1}{m} \cdot \frac{1}{u} \;=\; \frac{1}{m} \sum_{i=1}^{k} \frac{1}{v_i} \;=\; \sum_{i=1}^{k} \frac{1}{m v_i},
+\]
+contradicting admissibility. The constraint $m \cdot \max(E) \leq N$
+ensures all these elements lie in $[1, N]$.
+\end{proof}
+
+For each $M \in S$, let $H_{\leq M}$ denote the sub-hypergraph of $H$ on vertex
+set $S_{\leq M} \coloneqq \{c \in S : c \leq M\}$ with hyperedges
+$E \in H$ satisfying $E \subseteq S_{\leq M}$. Let
+\[
+    \alpha^*(H_{\leq M}) \;\coloneqq\; \max\Bigl\{ \sum_{c \in S_{\leq M}} y_c \;\Big|\; y \in [0, 1]^{S_{\leq M}},\;\; \sum_{c \in E} y_c \leq |E|-1 \text{ for every } E \in H_{\leq M} \Bigr\}
+\]
+denote the fractional independence number of $H_{\leq M}$, and write
+\[
+    \delta^*(M) \;\coloneqq\; |S_{\leq M}| \;-\; \alpha^*(H_{\leq M}).
+\]
+Note that $\delta^*(M) \geq |S_{\leq M}| - \alpha(H_{\leq M})$ where $\alpha$ is the integer independence number, so $\delta^*(M)$ is a lower bound on the forced omissions in any independent subset of $S_{\leq M}$.
+
+\begin{lemma}\label{lem:prefix-counting}
+Let $S = \{M_1 < M_2 < \cdots < M_{|S|}\}$ and set $M_{|S|+1} \coloneqq \infty$ (with $1/\infty = 0$). For any admissible $A \subseteq [1, N]$,
+\[
+    |A| \;\leq\; \Bigl(1 \;-\; \rho_P \cdot \sum_{j=1}^{|S|} \delta^*(M_j) \cdot \Bigl(\frac{1}{M_j} - \frac{1}{M_{j+1}}\Bigr)\Bigr) N \;+\; O(1).
+\]
+\end{lemma}
+
+\begin{proof}
+For each $m$ coprime to $\prod P$ with $N/M_{j+1} < m \leq N/M_j$, the largest $M \in S$ with $m \cdot M \leq N$ is exactly $M_j$. By \cref{lem:fiber}, $I_m$ restricted to $S_{\leq M_j}$ contains no hyperedge of $H_{\leq M_j}$, so
+\[
+    |I_m \cap S_{\leq M_j}| \;\leq\; \alpha(H_{\leq M_j}) \;\leq\; \alpha^*(H_{\leq M_j}) \;=\; |S_{\leq M_j}| - \delta^*(M_j).
+\]
+Hence each such $m$ \emph{omits} at least $\delta^*(M_j)$ integers from the set $\{m c : c \in S_{\leq M_j}, m c \leq N\}$. The number of integers $m$ coprime to $\prod P$ in the range $(N/M_{j+1}, N/M_j]$ is $\rho_P (N/M_j - N/M_{j+1}) + O(2^{|P|})$. Summing forced omissions across all $j$,
+\[
+    \#\bigl(\,[1, N] \setminus A\,\bigr) \;\geq\; \rho_P \cdot N \sum_{j} \delta^*(M_j) \Bigl(\frac{1}{M_j} - \frac{1}{M_{j+1}}\Bigr) \;+\; O(1).
+\]
+The fibers are pairwise disjoint (the decomposition $n = mc$ is unique), so this is a valid lower bound on the omission count. Subtracting from $N$ gives the claim.
+\end{proof}
+
+\begin{remark}\label{rem:not-weighted-LP}
+A natural-looking but incorrect alternative would be to solve a single
+weighted LP $\max \sum_c x_c / c$ on $S$ with constraint
+$\sum_{c \in E} x_c \le |E| - 1$ for every $E \in H$. This formulation is
+\emph{not} a rigorous bound on $f(N)/N$: the natural per-fiber averaged
+density $\tau_c = |\{m : mc \in A,\; \gcd(m, \prod P) = 1\}|/(\rho_P N/c)$
+fails to satisfy that constraint, because $\tau_c$ averages over
+$m \le N/c$ while the admissibility constraint on $E$ only applies for
+$m \le N/\max(E)$. The correct edge-weighted version is
+$\sum_{c \in E}(\max(E)/c)\, x_c \le |E|-1$, which is strictly tighter
+and yields a different (looser) LP. The prefix decomposition above avoids
+the issue by giving each $M$-prefix its own LP and integrating over
+fiber ranges.
+\end{remark}
+
+\section*{Exact rational dual certificate per prefix}
+
+For each $M \in S$, $\alpha^*(H_{\leq M})$ is the value of a finite LP. By
+LP duality, any nonnegative rationals
+$\bar{y} = (\bar{y}_E)_{E \in H_{\leq M}}$ and
+$\bar{z} = (\bar{z}_c)_{c \in S_{\leq M}}$ satisfying
+\begin{equation}\label{eq:dual-feas}
+    \sum_{E \ni c} \bar{y}_E + \bar{z}_c \;\geq\; 1 \qquad \text{for every } c \in S_{\leq M}
+\end{equation}
+gives an upper bound
+\[
+    \alpha^*(H_{\leq M}) \;\leq\; \sum_{E \in H_{\leq M}} (|E| - 1)\, \bar{y}_E \;+\; \sum_{c \in S_{\leq M}} \bar{z}_c.
+\]
+Consequently,
+\begin{equation}\label{eq:cert-deficit}
+    \delta^*(M) \;\geq\; |S_{\leq M}| \;-\; \sum_{E} (|E|-1)\, \bar{y}_E \;-\; \sum_{c} \bar{z}_c
+    \;\eqqcolon\; \bar{\delta}(M).
+\end{equation}
+A certificate $(\bar{y}, \bar{z})$ together with the value $\bar{\delta}(M)$ is what we will record per prefix.
+
+\section*{Computational result}
+
+We fix $P = \{2, 3, 5, 7, 11, 13, 17, 19\}$, $h = 5000$, $k_{\max} = 4$.
+Then $\rho_P = \prod_{p \in P}(p-1)/p$ is the explicit rational
+$\rho_P = 1 \cdot 2 \cdot 4 \cdot 6 \cdot 10 \cdot 12 \cdot 16 \cdot 18 \,/\, (2 \cdot 3 \cdot 5 \cdot 7 \cdot 11 \cdot 13 \cdot 17 \cdot 19) = 1\,658\,880/9\,699\,690$.
+The smooth set $S(P, h)$ has $|S| = 666$ elements; the hypergraph
+$H(P, h, k_{\max})$ has $1\,602\,877$ hyperedges, enumerated exhaustively
+by depth-first search over $k$-tuples of $P$-smooth integers in $[1, h]$.
+
+For each of the $|S| = 666$ values $M \in S$, we solved the prefix LP for
+$\alpha^*(H_{\leq M})$ with the HiGHS open-source solver \cite{highs} in
+IEEE double precision via a constraint-generation routine
+(start with a small active subset of edges, iteratively scan the full
+edge list for violated constraints, add violators and resolve). Convergence
+was reached in at most a handful of rounds per prefix, with the active set
+of each prefix used as the warm start for the next (larger) prefix.
+
+Given the optimal floating-point dual $y_E^{*}, z_c^{*}$ from HiGHS, we
+upgraded to rational form as follows: round $\bar{y}_E$ up to the
+nearest dyadic rational with denominator $2^{30}$, then set
+\[
+    \bar{z}_c \;\coloneqq\; \max\Bigl\{0,\; 1 \;-\; \sum_{E \ni c} \bar{y}_E\Bigr\}.
+\]
+By construction $(\bar{y}, \bar{z})$ satisfies \eqref{eq:dual-feas} exactly
+in $\mathbb{Q}$, which we then verified by direct exact-rational arithmetic.
+The deficit estimate $\bar{\delta}(M)$ in \eqref{eq:cert-deficit} is also
+exact in $\mathbb{Q}$, and the resulting sum
+$\Sigma \coloneqq \sum_{j} \bar{\delta}(M_j) \cdot (1/M_j - 1/M_{j+1})$
+is a single exact rational.
+
+\begin{theorem}\label{thm:cert}
+For $P = \{2, 3, 5, 7, 11, 13, 17, 19\}$, $h = 5000$, $k_{\max} = 4$,
+\[
+    \Sigma \;\geq\; \frac{P_\Sigma}{Q_\Sigma}
+    \;\approx\; 0.914\,611\,390\,0
+\]
+for explicit $P_\Sigma, Q_\Sigma \in \mathbb{Z}_{\geq 0}$ recorded in the
+accompanying JSON certificate, and therefore
+\[
+    f(N) \;\leq\; \bigl(1 - \rho_P \cdot \Sigma + o(1)\bigr) N
+    \;=\; \frac{104\,423\,799\,557\,560\,865\,582\,416\,418\,633\,021}
+              {123\,786\,557\,037\,604\,429\,979\,965\,194\,240\,000}\, N \;+\; o(N).
+\]
+\end{theorem}
+
+\begin{proof}
+For each $M \in S$ the certificate $(\bar{y}^{(M)}, \bar{z}^{(M)})$ satisfies, in exact $\mathbb{Q}$-arithmetic, the dual feasibility \eqref{eq:dual-feas} and gives a dual objective $\bar{\delta}(M)$ as defined in \eqref{eq:cert-deficit}. By the LP-duality argument above, $\delta^*(M) \geq \bar{\delta}(M)$ for every $M$. By \cref{lem:prefix-counting},
+\[
+    |A| \leq \Bigl(1 - \rho_P \sum_M \delta^*(M) (1/M - 1/M^+) + o(1) \Bigr) N
+         \leq \Bigl(1 - \rho_P \sum_M \bar{\delta}(M) (1/M - 1/M^+) + o(1) \Bigr) N.
+\]
+The right-hand side is an exact rational, which evaluates to the displayed value of $\alpha$ in \cref{thm:main}. The final inequality follows.
+\end{proof}
+
+\Cref{thm:main} follows from \cref{thm:cert}.
+
+\section*{Improvement chain and structural ceiling}
+
+For comparison, we record the rigorous prefix bounds obtained by the same procedure at intermediate $(P, h, k_{\max})$:
+
+\smallskip
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$P$ & $h$ & $k_{\max}$ & $f(N)/N \leq$ \\
+\midrule
+$\{2,3,5\}$               & $10^4$ & 5 & $0.8652$ \\
+$\{2,3,5,7,11,13\}$       & $2000$ & 5 & $0.8506$ \\
+$\{2,3,5,7,11,13\}$       & $2000$ & 4 & $0.8506$ \\
+$\{2,3,5,7,11,13,17\}$    & $2000$ & 4 & $0.8499$ \\
+$\{2,3,5,7,11,13,17,19\}$ & $2000$ & 4 & $0.8494$ \\
+$\{2,3,5,7,11,13,17,19\}$ & $5000$ & 4 & $\mathbf{0.8436}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\smallskip
+The numerical evidence suggests $k_{\max} = 4$ already captures all binding hyperedges in the LP optimum: at $P = \{2, 3, 5\}, h = 10^4$ the rigorous prefix bound is the same to ten decimal digits for $k_{\max} \in \{5, 6\}$, and at $P = \{2..13\}, h = 2000$ the bound is unchanged from $k_{\max} = 4$ to $k_{\max} = 5$. Beyond $k_{\max} = 4$ the LP gains no information.
+
+\begin{remark}\label{rem:end}
+The prefix fiber method, as captured by \cref{lem:prefix-counting}, encodes
+only those admissibility constraints visible \emph{within} a single fiber
+indexed by $m$ coprime to $\prod P$; it ignores admissibility constraints
+across distinct fibers, e.g.\ a relation $1/a = 1/b_1 + 1/b_2$ in which
+$a, b_1, b_2$ lie in three different $\prod P$-coprime classes. As $P$
+enlarges, the within-fiber view captures more of the global relation
+hypergraph $H_\infty$ on $\mathbb{Z}_{\geq 1}$, but the increments
+$\rho_P \cdot \Sigma$ appear to saturate well below
+the conjectured $1/2$. Closing the gap to $f(N) = (1/2 + o(1)) N$
+likely requires either an independent-set bound on $H_\infty$ directly,
+or a sharper cross-fiber combinatorial argument; we do not pursue either
+here. Smaller incremental improvements within the prefix fiber method
+itself remain achievable, in particular by enlarging $P$ or by increasing
+$h$.
+\end{remark}
+
+\section*{Acknowledgements}
+The fiber-method blueprint, edge-enumeration code, and the verified
+prefix-form certificate at $P = \{2, 3, 5\}, h = 10^4, k_{\max} = 5$ were
+drafted by OpenAI's Codex within the Rethlas open-source agentic
+mathematics-research pipeline. The constraint-generation acceleration,
+the per-prefix warm-start engineering, and the final extended-$P$ LP solves
+were developed by the author with assistance from Anthropic's Claude. All
+mathematical arguments and claims in the final manuscript were independently
+verified by the author, who takes full responsibility for the paper.
+
+\begin{thebibliography}{9}
+
+\bibitem{bloom301}
+T.~F.~Bloom,
+\emph{\Erdos Problem \#301},
+\url{https://www.erdosproblems.com/301},
+accessed 14 May 2026.
+
+\bibitem{highs}
+Q.~Huangfu and J.~A.~J.~Hall,
+\emph{Parallelizing the dual revised simplex method},
+Mathematical Programming Computation \textbf{10} (2018), no.~1, 119--142.
+
+\end{thebibliography}
+
+\end{document}

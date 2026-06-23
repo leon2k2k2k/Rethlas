@@ -1,0 +1,285 @@
+% \numberwithin{equation}{section}  % removed: no sections, was producing "0.X" labels
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+%\usepackage[mathscr]{euscript}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{setspace}
+\setstretch{1.125}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{xparse}
+\usepackage{xspace}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tikz-cd}
+\usepackage[backref=page, bookmarks=false]{hyperref}
+\usepackage[capitalize, noabbrev]{cleveref}
+\usepackage{dynkin-diagrams}
+% \usepackage{tocloft}
+
+% % Adjust the indentation for subsections in the table of contents
+% \cftsetindents{subsection}{1.5em}{2.5em}
+
+
+\setcounter{tocdepth}{2}
+
+\newcommand{\Erdos}{Erdős\xspace}
+
+\newcommand{\mb}{\mathbf}
+
+\newcommand{\iso}{\cong}
+\newcommand{\isoto}{\xrightarrow{\simeq}}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\ii}{\mathbf i}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+
+\newcommand{\op}{\mathsf{op}}
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\PSL}{\mathrm{PSL}}
+% \newcommand{\Diff}{\mathrm{Diff}}
+\newcommand{\Lie}{\mathrm{Lie}}
+\newcommand{\Zn}{\Z(n)}
+\newcommand{\Rn}{\R(n)}
+\newcommand{\Bdot}{B_\bullet}
+\newcommand{\Edot}{E_\bullet}
+\newcommand{\BdotG}{B_\bullet G}
+\newcommand{\EdotG}{E_{\bullet}G}
+\newcommand{\BdotH}{B_\bullet H}
+\newcommand{\BnablaG}{B_\nabla G}
+\newcommand{\EnablaG}{E_\nabla G}
+\newcommand{\BdotGamma}{B_\bullet \Gamma}
+\newcommand{\GFG}{\Gamma \backslash F / G}
+\newcommand{\GFR}{\Gamma \backslash F / \R}
+\newcommand{\GF}{\Gamma \backslash F}
+\newcommand{\Diff}{\mathrm{Diff}^+(S^1)}
+\newcommand{\Mfld}{Mfld}
+\newcommand{\Witt}{\mathfrak{w}}
+\newcommand{\LieVir}{\mathfrak{vir}}
+% \newcommand{\FGG}(F/G}
+
+\newcommand{\point}{\ast}
+
+\newcommand{\Zf}{\mb{Z}_2^F}
+\newsavebox{\pullback}
+\sbox\pullback{%
+\begin{tikzpicture}%
+\draw (0,0) -- (1ex,0ex);%
+\draw (1ex,0ex) -- (1ex,1ex);%
+\end{tikzpicture}}
+
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Hom}{Hom}
+
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{corollary}[equation]{Corollary}
+\newtheorem{proposition}[equation]{Proposition}
+\newtheorem{thm}[equation]{Theorem}
+\newtheorem{theorem}[equation]{Theorem}
+\newtheorem*{mainthm}{\cref{main_thm}}
+\newtheorem{conjecture}[equation]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{example}[equation]{Example}
+\newtheorem{definition}[equation]{Definition}
+\newtheorem{claim}[equation]{Claim}
+\newtheorem{conj}[equation]{Conjecture}
+\newtheorem{question}[equation]{Question}
+
+\theoremstyle{remark}
+\newtheorem{remark}[equation]{Remark}
+\newtheorem*{fct}{Fact}
+\newtheorem*{note}{Note}
+\newtheorem{observation}[equation]{Observation}
+
+\crefname{thm}{Theorem}{Theorems}
+\crefname{lem}{Lemma}{Lemmas}
+\crefname{cor}{Corollary}{Corollaries}
+\crefname{prop}{Proposition}{Propositions}
+\crefname{ex}{Exercise}{Exercises}
+\crefname{exm}{Example}{Examples}
+\crefname{defn}{Definition}{Definitions}
+\crefname{claim}{Claim}{Claims}
+\crefname{rem}{Remark}{Remarks}
+\crefname{fct}{Fact}{Facts}
+\crefname{note}{Note}{Notes}
+
+\newcommand{\term}{\emph} % e.g. "The \term{trace} is defined to be..."
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\set{\{}{\}}
+\DeclarePairedDelimiter\paren{(}{)}
+\DeclarePairedDelimiter\ang{\langle}{\rangle}
+\DeclarePairedDelimiter\ket{\lvert}{\rangle}
+
+\makeatletter
+	\let\oldparen\paren
+	\def\paren{\@ifstar{\oldparen}{\oldparen*}}
+\makeatother
+
+\usepackage{microtype}
+\usepackage{hypcap}
+
+\hypersetup{
+ colorlinks,
+ linkcolor={red!50!black},
+ citecolor={green!50!black},
+ urlcolor={blue!80!black}
+}
+
+% make cleveref use the Oxford comma:
+% see https://tex.stackexchange.com/questions/161338
+\newcommand{\creflastconjunction}{, and\nobreakspace}
+
+\newcommand{\TODO}{\textcolor{red}{TODO}}
+\newcommand{\QUESTION}{\textcolor{green}{QUESTION}}
+\newcommand{\ADDFIGURE}{\textcolor{blue}{ADDFIGURE}}
+
+
+\newcommand{\cat}{\mathsf}
+\newcommand{\Man}{\cat{Man}}
+\newcommand{\Sh}{\cat{Sh}}
+\newcommand{\Ch}{\cat{Ch}}
+\newcommand{\sSet}{\cat{sSet}}
+
+\newcommand{\Hsm}{H_{\mathrm{SM}}}
+
+\newcommand{\Sym}{\mathrm{Sym}}
+\newcommand{\fg}{\mathfrak g}
+\newcommand{\gl}{\mathfrak{gl}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\su}{\mathfrak{su}}
+\newcommand{\OmegaR}{\Omega^1 \otimes i\R}
+\newcommand{\chern}{(c_1)^\nabla}
+
+
+\renewcommand{\d}{\mathrm d}
+\newcommand{\ud}{\,\d}
+
+\newcommand{\tGam}{\widetilde\Gamma}
+\newcommand{\CExt}{\mathrm{CExt}}
+\newcommand{\Map}{\mathrm{Map}}
+
+% was this deifned somewhere else...?
+\newcommand{\AlgVir}{\mathfrak{vir}}
+\newcommand{\GpVir}{\widetilde\Gamma}
+
+% maintenance
+\newcommand{\YL}[1]{\footnote{\color{orange} {\bf YL:} {#1}}}
+\newcommand{\YLComm}[1]{{\color{orange} {\bf YL:} {#1}}}
+
+
+\newcommand{\IZ}{I\mb{Z}}
+
+\newcommand{\needcite}[1]{{\color{red} cite[{#1}]}}
+\newcommand{\Question}{{\color{red} Question}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cA}{\mathcal{A}}
+
+\newcommand{\vecn}{\vec{n}}
+\newcommand{\vecm}{\vec{m}}
+
+\newcommand{\mbb}[1]{\mathbb{{#1}}}
+\newcommand{\Moduli}{{\mbb{H}/SL(2, \mbb{Z})}}
+%%%% CFT notations
+% \newcommand{\tr}{\mathrm{tr}}
+
+
+\newcommand{\LambdaR}{\Lambda_\R}
+\newcommand{\LambdaRplus}{\LambdaR^+}
+\newcommand{\LambdaRminus}{\LambdaR^-}
+\newcommand{\U}{\mathrm{U}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\NLambda}{N_{\Lambda}}
+\newcommand{\vol}{\mathrm{vol}}
+\newcommand{\QL}{Q^L}
+\newcommand{\QR}{Q^R}
+% \renewcommand{\H}{\mathbb{H}}  % removed: conflicts with Hungarian umlaut needed for "Erdős"
+\newcommand{\ETS}{E^{\mathrm{TS}}}
+\newcommand{\odd}{\mathrm{odd}}
+\newcommand{\even}{\mathrm{even}}
+\newcommand{\cusp}{\mathrm{cusp}}
+\newcommand{\TS}{\mathrm{TS}}
+\newcommand{\SL}{\mathrm{SL}}
+\newcommand{\Mp}{\mathrm{Mp}}
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+\newcommand{\tZ}{\tilde{Z}}
+\newcommand{\Ann}{\mathrm{Ann}}
+\newcommand{\Res}{\mathrm{Res}}
+\newcommand{\Weil}{\mathrm{Weil}}
+\newcommand{\cE}{\mathcal{E}}
+% \newcommand{\PSL}{\mathrm{PSL}}
+\newcommand{\res}{\mathrm{res}}
+\newcommand{\SO}{\mathrm{SO}}
+\newcommand{\triv}{\mathrm{triv}}
+\newcommand{\Zctimes}[1]{(\Z/{#1}\Z)^\times}
+\newcommand{\Zmodc}[1]{\Z{#1}\Z}
+\newcommand{\lcm}{\mathrm{lcm}}
+\newcommand{\CP}{\mathbb{C}P}
+\newcommand{\cond}{\mathrm{cond}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\Rep}{\mathrm{Rep}}
+\newcommand{\Mpn}[1]{\Mp^{({#1})}_2(\Z)}
+\newcommand{\Sp}{\mathrm{Sp}}
+\newcommand{\diag}{\mathrm{diag}}
+\renewcommand{\sp}{\mathfrak{sp}}
+\newcommand{\mfh}{\mathfrak{h}}
+\newcommand{\mfg}{\mathfrak{g}}
+\newcommand{\lrangle}[1]{\langle #1 \rangle}
+
+% Sep-3-25
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Aut}{\mathrm{Aut}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\OF}{\mathcal{O}_F}
+\renewcommand{\OE}{\mathcal{O}_E}
+\newcommand{\mD}{\mathfrak{D}}
+\newcommand{\mq}{\mathfrak{q}}
+\newcommand{\ma}{\mathfrak{a}}
+\newcommand{\OK}{\mathcal{O}_K}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\SU}{\mathrm{SU}}
+\newcommand{\real}{\mathrm{real}}
+\newcommand{\complex}{\mathrm{complex}}
+\newcommand{\Cl}{\mathrm{Cl}}
+\newcommand{\PGL}{\mathrm{PGL}}
+\newcommand{\Spec}{\mathrm{Spec}}
+
+% ---------- Notation ----------
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\Asai}{\mathrm{Asai}}
+\newcommand{\Ad}{\mathrm{Ad}}
+\newcommand{\BC}{\mathrm{BC}}   % (stable) base change
+\newcommand{\AI}{\mathrm{AI}}   % automorphic induction
+\newcommand{\zetaE}{\zeta_E}
+\newcommand{\zetaF}{\zeta_F}
+\newcommand{\LambdaE}{\Lambda_E}
+\newcommand{\LambdaF}{\Lambda_F}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cR}{\mathcal{R}}   % Rankin–Selberg transform
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\Gal}{\mathrm{Gal}}
+\renewcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\veps}{\varepsilon}
+% ---------- Groups/Weil ----------
+\newcommand{\WE}{W_E}
+\newcommand{\WF}{W_F}
+\newcommand{\WEd}{W_E'}
+\newcommand{\WFd}{W_F'}   % Weil–Deligne groups
+% ---------- Tensor induction symbol ----------
+\newcommand{\Indten}{\mathrm{Ind}^{\,\otimes}} % tensor (a.k.a. multiplicative) induction
+\newcommand{\Rplus}{\R_{>0}}
+\newcommand{\nc}{\mathrm{nc}}

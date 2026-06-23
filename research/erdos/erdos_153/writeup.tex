@@ -1,0 +1,131 @@
+\documentclass[11pt]{amsart}
+\input{preamble.tex}
+\geometry{top=0.7in, bottom=0.7in, left=0.9in, right=0.9in}
+
+\title{\Erdos \#153: Asymptotically maximum case}
+
+\author{Yu Leon Liu}
+\address{1 Oxford St, Cambridge, MA 02139}
+\email{yuleonliu@math.harvard.edu}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\Erdos Problem~\#153~\cite{bloom153} asks the following question.
+For a finite Sidon set $A$ with $|A| = n$, write $A + A = \{s_1 < \cdots < s_t\}$, where $t = |A+A| = \binom{n+1}{2} \sim n^2/2$. Define
+\[
+Q(A) \;\coloneqq\; \frac{1}{t}\sum_{i=1}^{t-1}(s_{i+1} - s_i)^2.
+\]
+Does $Q(A) \to \infty$ for every sequence of finite Sidon sets with $|A| \to \infty$?
+
+Write $A = \{a_1 < \cdots < a_n\}$ and $D = \operatorname{diam}(A) = a_n - a_1$. Note that $s_1 = 2a_1$ and $s_t = 2a_n$, so the sumset spans an interval of length $s_t - s_1 = 2D$.
+\begin{observation}[Complementary regime]\label{rem:sparse}
+Cauchy--Schwarz gives $Q(A) \geq 4D^2/t^2$, so we have $Q(A) \to \infty$ whenever $D/n^2 \to \infty$ (since $t \sim n^2/2$). This was observed by Dutta~\cite{dutta153post}. It follows that we are reduced to the case $D = O(n^2)$.
+\end{observation}
+
+In this note we give a short proof of the densest case, where $D = (1 + o(1))\,n^2$. We call such a Sidon set \emph{asymptotically maximum}.\footnote{Examples are obtained from Bose--Chowla sets~\cite{BoseChowla1962}, together with the classical Sidon upper bound~\cite{ErdosTuran1941}.}
+\begin{theorem}\label{thm:main}
+Let $(A_n)_{n \geq 1}$ be a sequence of Sidon sets with $|A_n| = n$ and $\operatorname{diam}(A_n) = (1 + o(1))\,n^2$. Then $Q(A_n) \to \infty$.
+\end{theorem}
+\begin{remark}
+The case $\liminf \operatorname{diam}(A_n)/n^2 > 1$ remains open.
+\end{remark}
+
+The remainder of this note is devoted to proving \cref{thm:main}.
+The key input is the following sumset density description, which follows from Pikhurko's uniformity lemma~\cite[Lemma~10]{Pikhurko2006} by the same convolution argument used in~\cite[Lemma~10]{liu819}. Define the triangular density
+\[
+\varphi(y) \;:=\; \begin{cases} y, & 0 \leq y \leq 1/2, \\ 1 - y, & 1/2 \leq y \leq 1, \\ 0, & \text{otherwise.} \end{cases}
+\]
+
+\begin{lemma}[{\cite[Lemma~10]{liu819}}]\label{lem:density}
+Let $A \subset [0,D]$ be an asymptotically maximum Sidon set of size $n$, so $D = (1+o(1))\,n^2$. Fix $\eta > 0$ and let $J \subset [0, 2D]$ be an integer interval of length $|J| = \lfloor \eta D \rfloor$ centered at $x \cdot D$ for some $x \in (0,2)$. Then
+\[
+\frac{|(A+A) \cap J|}{|J|} \;=\; \varphi(x/2) + O(\eta) + o_n(1),
+\]
+where $o_n(1) \to 0$ as $n \to \infty$, uniformly in $x$.
+\end{lemma}
+
+In particular, $\varphi(y) \to 0$ as $y \to 0$ or $y \to 1$: the sumset density vanishes linearly at the boundary of $[0, 2D]$.
+We need the following general inequality, which lets us localize the sum of squared gaps.
+\begin{lemma}[Localization]\label{lem:local}
+Let $T = \{s_1 < \cdots < s_t\} \subset \R$ with gaps $d_i = s_{i+1} - s_i$, and let $I_1, \ldots, I_N \subset [s_1, s_t]$ be pairwise disjoint intervals. Then
+\[
+\sum_i d_i^2 \;\geq\; \sum_{k=1}^{N} \frac{|I_k|^2}{|T \cap I_k| + 1}.
+\]
+\end{lemma}
+
+\begin{proof}
+For each $k$, the $m_k = |T \cap I_k|$ points of $T$ in $I_k$ cut it into $m_k + 1$ pieces; call their lengths $\ell_1^{(k)}, \ldots, \ell_{m_k+1}^{(k)}$. By Cauchy--Schwarz,
+\[
+\sum_j \bigl(\ell_j^{(k)}\bigr)^2 \;\geq\; \frac{|I_k|^2}{m_k + 1}.
+\]
+Each piece $\ell_j^{(k)}$ is contained in some gap of $T$ of length $d_i$, so $\ell_j^{(k)} \leq d_i$. Since the intervals $I_k$ are pairwise disjoint, pieces from different intervals occupy disjoint parts of the real line, and pieces lying in the same gap $d_i$ are disjoint subintervals of that gap with total length $\leq d_i$. Writing $\ell$ for a generic piece length, we have
+\[
+\sum_{\text{all pieces}} \ell^2
+\;=\; \sum_i \sum_{\substack{\text{pieces} \\ \text{in gap }i}} \ell^2
+\;\leq\; \sum_i \sum_{\substack{\text{pieces} \\ \text{in gap }i}} \ell \cdot d_i
+\;=\; \sum_i d_i \cdot \underbrace{\Bigl(\sum_{\substack{\text{pieces} \\ \text{in gap }i}} \ell\Bigr)}_{\leq\, d_i}
+\;\leq\; \sum_i d_i^2,
+\]
+where the first inequality uses $\ell \leq d_i$ for each piece, and the last uses that the pieces in gap $i$ are disjoint subintervals of that gap. Combining with the Cauchy--Schwarz bound above gives the result.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:main}]
+Since $Q(A)$ is invariant under translation, we may assume $\min A_n = 0$, so that $A_n \subset [0, D]$ with $\max A_n = D$. Write $T = A_n + A_n = \{s_1 < \cdots < s_t\}$ and $d_i = s_{i+1} - s_i$, with $D = (1+o(1))\,n^2$ and $t \sim n^2/2$.
+
+Fix constants $0 < \eta < \varepsilon < 1/2$, independent of $n$. Take $N = \lfloor (1/2 - \varepsilon)/\eta \rfloor$ consecutive disjoint intervals $I_1, \ldots, I_N$ of width $\Delta = 2\eta D$, starting at $2\varepsilon D$, and ignore the leftover part. The $k$-th interval $I_k$ is centered at $u_k \cdot 2D$ where $u_k = \varepsilon + (k - \tfrac{1}{2})\eta$. Since $u_k \leq 1/2$, we have $\varphi(u_k) = u_k$.
+
+Since $\eta$ and $\varepsilon$ are fixed, $\Delta = 2\eta D \to \infty$ as $n \to \infty$. Applying \cref{lem:density} with parameter $2\eta$, for all $n$ sufficiently large (depending on $\eta, \varepsilon$),
+\[
+m_k \;=\; |T \cap I_k| \;=\; (u_k + E_{k,n})\,\Delta,
+\]
+where $|E_{k,n}| \leq C_0 \eta + o_n(1)$ uniformly in $k$, for an absolute constant $C_0$. For all $n$ sufficiently large, $m_k + 1 \leq (u_k + 2C_0\eta)\,\Delta$, and so by \cref{lem:local},
+\[
+\sum d_i^2 \;\geq\; \sum_{k=1}^{N} \frac{\Delta^2}{m_k + 1} \;\geq\; \sum_{k=1}^{N} \frac{\Delta}{u_k + 2C_0\eta} \;=\; \sum_{k=1}^{N} \frac{2\eta D}{u_k + 2C_0\eta}.
+\]
+Using $2D/t \to 4$ as $n \to \infty$ (since $D = (1+o_n(1))\,n^2$ and $t \sim n^2/2$), for all $n$ sufficiently large,
+\[
+Q(A_n) \;=\; \frac{1}{t}\sum d_i^2 \;\geq\; 3\,\eta \sum_{k=1}^{N} \frac{1}{u_k + 2C_0\eta}.
+\]
+The right-hand side depends only on $\eta$ and $\varepsilon$ (not on $n$). It is a Riemann sum with step size $\eta$ for $\int_\varepsilon^{1/2} du/(u + 2C_0\eta)$, which converges as $\eta \to 0$ to $\int_\varepsilon^{1/2} du/u = \log(1/(2\varepsilon))$. This in turn diverges as $\varepsilon \to 0$.
+
+Given $B > 0$, first choose $\varepsilon > 0$ so small that $3\log(1/(2\varepsilon)) > 2B$. Then choose $0 < \eta < \varepsilon$ sufficiently small so that the Riemann sum exceeds $B$. Finally choose $n$ large enough that all $o_n(1)$ errors are negligible. This gives $Q(A_n) > B$ for all large $n$. Since $B$ is arbitrary, $Q(A_n) \to \infty$.
+\end{proof}
+
+\begin{thebibliography}{9}
+
+\bibitem{bloom153}
+T.~F.~Bloom,
+\emph{\Erdos Problem \#153},
+\url{https://www.erdosproblems.com/153},
+accessed May 2026.
+
+\bibitem{dutta153post}
+S.~Dutta,
+\emph{Forum comment on \Erdos Problem \#153} (post 4306, 15 Feb 2026),
+\url{https://www.erdosproblems.com/forum/thread/153\#post-4306}.
+
+\bibitem{ErdosTuran1941}
+P.~Erd\H{o}s and P.~Tur\'an,
+\emph{On a problem of Sidon in additive number theory, and on some related problems},
+J.~London Math.\ Soc.\ \textbf{16} (1941), 212--215.
+
+\bibitem{BoseChowla1962}
+R.~C.~Bose and S.~Chowla,
+\emph{Theorems in the additive theory of numbers},
+Comment.\ Math.\ Helv.\ \textbf{37} (1962/63), 141--147.
+
+\bibitem{Pikhurko2006}
+O.~Pikhurko,
+\emph{Dense edge-magic graphs and thin additive bases},
+Discrete Mathematics \textbf{306} (2006), 2097--2107.
+
+\bibitem{liu819}
+Y.~L.~Liu,
+\emph{\Erdos \#819: reflected Sidon lower bound},
+\url{https://leon2k2k2k.github.io/erdos819.pdf}, May 2026.
+
+\end{thebibliography}
+
+\end{document}
