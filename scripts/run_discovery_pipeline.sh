@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
-# Run the unit-distance CoT discovery pipeline through promotion generation.
+# Run the Rethlas discovery pipeline (discover -> triage -> promote).
+# Domain-agnostic: defaults are neutral; point PROBLEM_FILE/DISCOVERY_PROFILE
+# at any domain (Erdos by default in the example campaigns).
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-PROBLEM_FILE="${PROBLEM_FILE:-data/discrete_geometry/unit_distance_disproof.md}"
-BATCH_ID="${BATCH_ID:-discrete_geometry/unit_distance_cot_$(date -u +%Y%m%dT%H%M%SZ)}"
+PROBLEM_FILE="${PROBLEM_FILE:-data/example.md}"
+BATCH_ID="${BATCH_ID:-discovery/run_$(date -u +%Y%m%dT%H%M%SZ)}"
 SAMPLES="${SAMPLES:-10}"
 PARALLEL="${PARALLEL:-2}"
 MIN_VALID_CARDS="${MIN_VALID_CARDS:-1}"
 MODEL="${MODEL:-gpt-5.5}"
 REASONING_EFFORT="${REASONING_EFFORT:-xhigh}"
-DISCOVERY_PROFILE="${DISCOVERY_PROFILE:-unit_distance_transition}"
+DISCOVERY_PROFILE="${DISCOVERY_PROFILE:-low_hint}"
 DISCOVERY_FOCUS="${DISCOVERY_FOCUS:-}"
 ALLOW_SOURCE_TEMPLATES="${ALLOW_SOURCE_TEMPLATES:-}"
 SOURCE_TEMPLATE_FILES="${SOURCE_TEMPLATE_FILES:-}"
@@ -29,8 +31,8 @@ CODEX_POLL_SECONDS="${CODEX_POLL_SECONDS:-30}"
 usage() {
   cat <<'EOF'
 Usage:
-  SAMPLES=10 PARALLEL=2 BATCH_ID=discrete_geometry/unit_distance_cot_001 \
-    scripts/run_unit_distance_cot_pipeline.sh
+  SAMPLES=10 PARALLEL=2 BATCH_ID=discovery/run_001 \
+    scripts/run_discovery_pipeline.sh
 
 Environment:
   PROBLEM_FILE              Initial benchmark problem file.

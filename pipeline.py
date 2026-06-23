@@ -219,7 +219,7 @@ def cmd_discover(cfg: dict, dry_run: bool) -> int:
         if cfg_key in cfg and cfg[cfg_key] != "":
             val = cfg[cfg_key]
             env[env_key] = "1" if val is True else "0" if val is False else str(val)
-    script = SCRIPTS / "run_unit_distance_cot_pipeline.sh"
+    script = SCRIPTS / "run_discovery_pipeline.sh"
     set_knobs = {k: env[k] for k in passthrough if k in env and env[k]}
     print(f"== rethlas discover: {cfg['name']} ==")
     print(f"   stage script: {script.relative_to(REPO_ROOT)}")

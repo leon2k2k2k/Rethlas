@@ -1,0 +1,22 @@
+# Discover campaign: discovery -> triage -> promotion chain.
+# Run:   python3 pipeline.py discover campaigns/erdos_discover_example.yaml
+# Domain-agnostic engine; this example is set up for Erdos-style problems.
+#
+# Seed: point problem_file at the problem you want to discover attack-angles
+# from. It ships pointing at the bundled demo problem so the command runs
+# out of the box; drop your own statements under agents/generation/data/
+# (e.g. data/erdos/<problem>.md) and point here.
+name: erdos_discover_example
+mode: discover
+
+problem_file: data/example.md
+samples: 10
+parallel: 2
+model: gpt-5.5
+reasoning_effort: xhigh
+discovery_profile: low_hint      # neutral; no domain-specific hinting
+
+# Auto-loop flags (default off = generate the repair command but do not launch).
+auto_launch_promotion: false
+auto_promote_obstruction: false
+auto_launch_obstruction: false

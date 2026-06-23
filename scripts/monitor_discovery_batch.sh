@@ -25,7 +25,7 @@ echo "memory: $MEMORY_DIR"
 echo
 echo "=== Processes ==="
 ps -eo pid,ppid,etime,stat,pcpu,pmem,cmd \
-  | rg "run_discovery_batch|run_unit_distance_cot_pipeline|codex exec|${BATCH_ID}|uvicorn api.server" || true
+  | rg "run_discovery_batch|run_discovery_pipeline|codex exec|${BATCH_ID}|uvicorn api.server" || true
 
 echo
 echo "=== Manifest ==="

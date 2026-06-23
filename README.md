@@ -1,159 +1,131 @@
-# Rethlas
+# Autonomous Rethlas Runner
 
-Rethlas is a natural-language reasoning system for mathematics built around two Codex agents:
+Clone it, point it at open math problems, and it attacks them on its own. A
+generation agent writes a proof, a verification agent referees it against a
+strict schema, and the loop repairs and retries until a proof passes or the
+budget runs out. It sweeps many problems in parallel, can discover new ones to
+attack, and runs under integrity controls so a result is one it actually
+derived rather than looked up. Defaults to Erdos problems; works on any domain.
 
-- The generation agent reads a math problem from a markdown file and writes an informal proof blueprint.
-- The verification agent checks that proof blueprint, produces a structured verdict, and serves as the generation agent's verifier.
+Built on [Rethlas](https://github.com/frenzymath/Rethlas) by the frenzymath
+group (PKU). The two-agent generate-plus-verify kernel, the
+verification-as-a-service API, the schema verdict, and the MCP tool layer are
+theirs (see `agents/` and `LICENSE`, both retained). This repository adds the
+autonomous runner around that kernel.
 
-The intended deployment order is:
+## What this runner adds on top of the kernel
 
-1. Start the verification agent as a local HTTP service.
-2. Run the generation agent through Codex.
-3. Let the generation agent call the verification service during its proof-and-repair loop.
+- **Unified CLI** (`pipeline.py`): one front door over every stage
+  (`pool`, `discover`, `triage`, `promote`, `status`), driven by
+  `campaigns/*.yaml`, with all state under `pipeline_runs/<name>/`.
+- **Pool manager**: sweep a queue of problems N at a time, unattended,
+  auto-advancing, with a live scoreboard. Idempotent: already-verified
+  problems are skipped on re-run.
+- **Proof-and-repair loop** (`scripts/run_with_retries.sh`): drives the
+  kernel's verifier, feeds its repair hints back into the prover, and retries
+  up to `max_attempts`.
+- **Discovery to triage to promotion**: find new attack angles, score them,
+  and promote the winners into runnable problems.
+- **Integrity layer**: a frozen-world egress block (`scripts/net/noegress.so`),
+  date-gated literature, and a blind-source transcript audit
+  (`scripts/audit_blind_run.py`), so an unsupervised result is trustworthy.
+- **Workbench dashboard** (`ui/`): browse, launch, and monitor runs with live
+  transcript streaming. Runs locally.
 
-## Repository Layout
-
-- `agents/generation`: the proof-generation agent
-- `agents/verification`: the proof-verification agent
-
-In particular, 
-- Original problems are put in `agents/generation/data/`, e.g. unclassified problem `agents/generation/data/example.md`, or classfied problem `agents/generation/data/modrep/modrep.md`, `agents/generation/data/example/example1.md`.
-- Zola project to render the results in a static website is in `agents/generation/site/`.
-
-## 1. Install Codex CLI
-
-Install the Codex CLI:
-
-```bash
-npm install -g @openai/codex
-```
-
-
-## 2. Clone the Repository
-
-```bash
-git clone https://github.com/frenzymath/Rethlas.git
-cd Rethlas
-```
-
-## 3. Start the Verification Service
-
+## Quickstart
 
 ```bash
-cd agents/verification
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn api.server:app --host 0.0.0.0 --port 8091
+git clone https://github.com/leon2k2k2k/Rethlas.git && cd Rethlas
+
+# 1. verifier service (the Rethlas kernel)
+cd agents/verification && uv venv && uv pip install -r requirements.txt
+uv run uvicorn api.server:app --host 0.0.0.0 --port 8091 &
+cd ../..
+
+# 2. integrity egress block
+cd scripts/net && ./build.sh && cd ../..
+
+# 3. the prover
+npm install -g @openai/codex      # then: codex login
+
+# 4. preview a run (no cost), then run it for real
+python3 pipeline.py pool campaigns/erdos_pool_example.yaml --dry-run
+python3 pipeline.py pool campaigns/erdos_pool_example.yaml
+python3 pipeline.py status erdos_pool_example
 ```
 
-Using uv
+## Usage
+
+**Solve a queue of problems (the pool manager):**
 ```bash
-cd agents/verification
-uv venv 
-uv pip install -r requirements.txt
-uv run uvicorn api.server:app --host 0.0.0.0 --port 8091
+python3 pipeline.py pool campaigns/erdos_pool_example.yaml
+python3 pipeline.py status erdos_pool_example     # read the scoreboard
 ```
 
-## 4. Run the Generation Agent on the Included Example
-
-
+**Discover new problems, then triage and promote a batch:**
 ```bash
-cd agents/generation
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r mcp/requirements.txt
-./tests/run_example.sh
+python3 pipeline.py discover campaigns/erdos_discover_example.yaml
+python3 pipeline.py triage  agents/generation/results/<batch_id>
+python3 pipeline.py promote agents/generation/results/<batch_id>   # add --launch to fire it
 ```
 
-This script:
+**Run your own problems (this is the flexible part):** drop markdown
+statements under `agents/generation/data/` (subdirectories are preserved),
+then list them in a campaign's `problems:` or point `queue:` at a file with
+one path per line. Erdos is only the default example set; any domain works.
 
-- reads `agents/generation/data/example.md`
-- runs `codex exec` inside `agents/generation`
-- resumes the same Codex session for up to `MAX_ITERATIONS` iterations, alternating search-disabled and search-enabled continuation turns
-- stops when `agents/generation/results/example/blueprint_verified.md` is produced
-- writes iteration logs to `agents/generation/logs/example/iter/`
-- writes memory artifacts to `agents/generation/memory/example/`
-- writes the draft proof to `agents/generation/results/example/blueprint.md`
-- writes the verified proof to `agents/generation/results/example/blueprint_verified.md` if verification succeeds
+**Outcome taxonomy** (what the scoreboard groups into): `verified`, `partial`,
+`attempted`, `failed`. A `verified` result is a *candidate*: verifier-accepted,
+still pending human review before it counts as a real result.
 
-You can set the maximum number of iterations:
+## Integrity (the frozen world)
 
-```bash
-MAX_ITERATIONS=10 ./tests/run_example.sh
-```
+During a run the prover is sealed: `noegress.so` blocks network egress,
+literature access is date-gated to a `literature_cutoff`, and
+`audit_blind_run.py` scans the transcript afterward for any policy violation.
+So a result the runner produces is one it derived under those constraints, not
+one it retrieved. Set the cutoff per campaign (`literature_cutoff: YYYY-MM-DD`).
 
-## 5. Run Your Own Problem
+## Results
 
-Put your problem in a markdown file under `agents/generation/data/`. Save that as:
+`research/erdos/` holds five featured partial results on open Erdos problems
+(#153, #301, #327, #675a, #819), author-reviewed and externally verified, with
+source and final PDF. These are candidates pending the problem owners' review;
+the broad attempt pool is reported only in aggregate.
 
-```text
-agents/generation/data/my_problem.md
-```
-
-Then run:
-
-```bash
-cd agents/generation
-source .venv/bin/activate
-PROBLEM_FILE=data/my_problem.md ./tests/run_example.sh
-```
-
-You can group problems in subdirectories under `data/` and the generated artifacts preserve that structure. For example:
-
-```bash
-PROBLEM_FILE=data/modrep/modrep.md ./tests/run_example.sh
-```
-
-To attach user-provided references to a problem (this is optional; use it when you are working on your own research problem and want to provide the agent with unreleased notes), create a sibling reference directory with the same stem:
-
-```text
-agents/generation/data/modrep/modrep.refs/
-```
-
-When that directory exists, the generation agent reads its files before using external search.
-Reference files may be markdown, LaTeX, plain text, or PDF, but markdown, LaTeX and plain text is prefered over PDF. Actually, PDFs are converted to extracted text under `.extracted/` before the agent runs.
-
-## 6. View Results in the Browser
-
-- `agents/generation/site`: Zola site for browsing results in the browser
-
-Results are markdown files with LaTeX math. To render them properly, a local [Zola](https://www.getzola.org/) site using the [MATbook](https://www.getzola.org/themes/matbook/) theme is included.
-
-### Prerequisites
-
-Install Zola.
-
-Zola can be easily installed using your package manager in terminal. For example, on Mac, you simply run
+## Running the kernel directly, and viewing results
 
 ```bash
-brew install zola
+# one problem straight through the kernel (no pipeline)
+cd agents/generation && PROBLEM_FILE=data/example.md ./tests/run_example.sh
+
+# browse results in a local Zola site (installs the MATbook theme on first run)
+cd agents/generation && ./site/serve.sh        # http://localhost:3264
 ```
 
-and on ArchLinux, run
+## Layout
+
+```
+pipeline.py          unified CLI over every stage
+campaigns/           one YAML per run (Erdos examples included)
+scripts/             orchestration + the integrity layer + stage scripts
+  net/               the frozen-world egress block
+  tests/             pipeline + integrity unit tests
+ui/                  the Workbench dashboard
+research/erdos/      the five featured results
+agents/              the Rethlas kernel (upstream): generation + verification
+```
+
+## Tests
 
 ```bash
-sudo pacman -S zola
+python3 -m pytest scripts/tests -q
 ```
 
-For other operating systems, please see [Zola installation](https://www.getzola.org/documentation/getting-started/installation/).
+## Attribution and license
 
-### Serve
-
-From `agents/generation/`:
-
-```bash
-./site/serve.sh
-```
-
-On first run this automatically clones the [MATbook](https://www.getzola.org/themes/matbook/) theme. Then it syncs all results from `results/` into the site and starts a local server. Open http://localhost:3264 in your browser.
-
-Each problem  in `agents/generation/data/your_category`  will be a section in a chapter called `your_category`, while problems directly in `agents/generation/data` will be under `unclassified` chapter.
-
-### Update the MATbook Theme
-
-```bash
-./site/setup_theme.sh
-```
-
-This pulls the latest version from the [MATbook repository](https://github.com/srliu3264/MATbook).
+The reasoning kernel (generation + verification agents, verify API, schema,
+MCP) is [frenzymath/Rethlas](https://github.com/frenzymath/Rethlas). The
+autonomous runner, the integrity layer, the operations tooling, and the
+research campaigns are this fork's additions. Licensed under Apache 2.0,
+inherited from upstream.
