@@ -1,0 +1,13 @@
+[Unit]
+Description=Moon Bridge (Responses->DeepSeek translation proxy for codex)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/claude-user/moon-bridge
+ExecStart=/home/claude-user/moon-bridge/moonbridge --config /home/claude-user/moon-bridge/config.yml
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target

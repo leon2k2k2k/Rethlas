@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rethlas Workbench</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div>
+        <h1>Rethlas Workbench</h1>
+        <div class="meta-line" id="summary">Discovering runs...</div>
+      </div>
+      <nav class="actions">
+        <a class="button" href="jobs.html">Jobs</a>
+        <a class="button" href="launch.html">Launch</a>
+        <a class="button" href="editor.html">Editor</a>
+        <a class="button" href="verify.html">Verify</a>
+      </nav>
+    </header>
+    <div id="filters" class="toolbar" style="border:1px solid var(--line); border-radius:8px; margin-bottom:14px; justify-content:flex-start"></div>
+    <section id="run-grid" class="run-grid"></section>
+  </main>
+  <script type="module" src="js/index-page.js"></script>
+</body>
+</html>

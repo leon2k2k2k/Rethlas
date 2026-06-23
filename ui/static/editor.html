@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editor — Rethlas</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="vendor/marked.min.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["\\(", "\\)"], ["$", "$"]],
+        displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+        processEscapes: true,
+        processEnvironments: true,
+        tags: "ams",
+        macros: {
+          A:"\\mathcal{A}", B:"\\mathcal{B}", N:"\\mathbb{N}", Z:"\\mathbb{Z}",
+          R:"\\mathbb{R}", Q:"\\mathbb{Q}", C:"\\mathbb{C}", F:"\\mathbb{F}",
+          AUT:"\\operatorname{Aut}", Trop:"\\operatorname{Trop}",
+          Dr:"\\operatorname{Dr}", Hilb:"\\operatorname{Hilb}",
+          bZ:"\\mathbb{Z}", bR:"\\mathbb{R}", bN:"\\mathbb{N}", bQ:"\\mathbb{Q}",
+          VV:"V", EE:"E", GG:"\\Gamma",
+          RR:"\\mathbb{R}", bdy:"\\partial", Dil:"\\operatorname{Dil}",
+          Vol:"\\operatorname{Vol}", cLL:"\\mathcal{L}", op:"\\mathrm{op}",
+          defeq:"\\mathrel{:=}", textup:"\\text"
+        }
+      },
+      chtml: { fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2" },
+      options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+      startup: {
+        typeset: false,
+        ready: () => {
+          MathJax.startup.defaultReady();
+          window.dispatchEvent(new Event("rethlas-mathjax-ready"));
+        }
+      }
+    };
+  </script>
+  <script defer src="vendor/tex-chtml.js"></script>
+</head>
+<body>
+  <main style="max-width:1800px">
+    <header class="topbar">
+      <div>
+        <h1>Editor</h1>
+        <div class="meta-line" id="status-line">Pick a file</div>
+      </div>
+      <nav class="actions">
+        <a class="button" href="./">All Runs</a>
+        <a class="button" href="launch.html">Launch</a>
+      </nav>
+    </header>
+    <div id="config-warning" class="notice bad" hidden>
+      ⚠ You are editing live pipeline configuration — changes apply to the next run launched.
+    </div>
+    <section class="viewer" style="grid-template-columns: 320px minmax(0,1fr)">
+      <aside class="sidebar">
+        <div class="side-section">
+          <h3>Repo</h3>
+          <select id="root-select" style="width:100%"></select>
+        </div>
+        <div class="side-section">
+          <h3>New problem</h3>
+          <input id="new-name" type="text" placeholder="data/category/name.md" style="width:100%">
+          <button class="button" id="new-btn" style="margin-top:8px">Create from template</button>
+        </div>
+        <div class="side-section" style="max-height:50vh;overflow:auto">
+          <h3>Problem files</h3>
+          <div id="data-list" class="kv"></div>
+        </div>
+        <div class="side-section">
+          <h3>Configs &amp; prompts</h3>
+          <div id="config-list" class="kv"></div>
+        </div>
+      </aside>
+      <section class="detail">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <span id="current-file" class="meta-line">no file loaded</span>
+          </div>
+          <label><input id="edit-toggle" type="checkbox"> edit raw</label>
+          <button class="button" id="save-btn" disabled>Save</button>
+          <button class="button" id="backups-btn" disabled>Backups</button>
+          <a class="button" id="launch-link" hidden>Launch run with this problem</a>
+        </div>
+        <div class="content" style="display:flex">
+          <textarea id="edit-area" spellcheck="false" hidden
+            style="flex:1;background:var(--code);color:var(--text);border:0;padding:16px;
+                   font:13px/1.6 ui-monospace,Menlo,Consolas,monospace;resize:none;outline:none"></textarea>
+          <article id="preview" class="markdown"
+            style="flex:1;overflow:auto;border-left:1px solid var(--line)"></article>
+        </div>
+        <div id="backup-list" class="toolbar" hidden style="justify-content:flex-start"></div>
+      </section>
+    </section>
+  </main>
+  <script type="module" src="js/editor-page.js"></script>
+</body>
+</html>

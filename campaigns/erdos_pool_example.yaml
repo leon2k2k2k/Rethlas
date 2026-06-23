@@ -1,0 +1,23 @@
+# Pool campaign: sweep a queue of problems with N concurrent runs.
+# Run:   python3 pipeline.py pool campaigns/erdos_pool_example.yaml --dry-run   # preview
+#        python3 pipeline.py pool campaigns/erdos_pool_example.yaml             # run
+# Check: python3 pipeline.py status erdos_pool_example
+name: erdos_pool_example
+mode: pool
+
+concurrency: 2           # how many problems to attack at once (auto-advances the queue)
+model: gpt-5.5
+reasoning_effort: xhigh
+provider: ""             # "" = gpt via codex; "deepseek" = DeepSeek V4 via local bridge
+max_attempts: 5          # fresh-process retries per problem
+blind_run: 1
+verify_endpoint: http://127.0.0.1:8091/verify
+
+# Optional literature cutoff (YYYY-MM-DD): freeze the world at this date
+# (noegress block + frozen_literature MCP). Leave empty to disable.
+literature_cutoff: ""
+
+# The queue. Either list problems here, or set `queue: path/to/queue.txt`
+# (one data/...md path per line). Problems already verified are skipped.
+problems:
+  - data/example.md

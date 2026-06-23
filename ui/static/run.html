@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rethlas Run</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="vendor/marked.min.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["\\(", "\\)"], ["$", "$"]],
+        displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+        processEscapes: true,
+        processEnvironments: true,
+        tags: "ams",
+        macros: {
+          A:"\\mathcal{A}", B:"\\mathcal{B}", N:"\\mathbb{N}", Z:"\\mathbb{Z}",
+          R:"\\mathbb{R}", Q:"\\mathbb{Q}", C:"\\mathbb{C}", F:"\\mathbb{F}",
+          AUT:"\\operatorname{Aut}", Trop:"\\operatorname{Trop}",
+          Dr:"\\operatorname{Dr}", Hilb:"\\operatorname{Hilb}",
+          bZ:"\\mathbb{Z}", bR:"\\mathbb{R}", bN:"\\mathbb{N}", bQ:"\\mathbb{Q}",
+          VV:"V", EE:"E", GG:"\\Gamma",
+          RR:"\\mathbb{R}", bdy:"\\partial", Dil:"\\operatorname{Dil}",
+          Vol:"\\operatorname{Vol}", cLL:"\\mathcal{L}", op:"\\mathrm{op}",
+          defeq:"\\mathrel{:=}", textup:"\\text"
+        }
+      },
+      chtml: { fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2" },
+      options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+      startup: {
+        typeset: false,
+        ready: () => {
+          MathJax.startup.defaultReady();
+          window.dispatchEvent(new Event("rethlas-mathjax-ready"));
+        }
+      }
+    };
+  </script>
+  <script defer src="vendor/tex-chtml.js"></script>
+  <script type="module" src="js/run-page.js"></script>
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div>
+        <h1 id="page-title">Rethlas Run</h1>
+        <div id="page-meta" class="meta-line">Loading...</div>
+      </div>
+      <nav class="actions">
+        <a class="button" href="./">All Runs</a>
+        <a class="button" href="jobs.html">Jobs</a>
+      </nav>
+    </header>
+
+    <section id="viewer" class="viewer" hidden>
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2 id="side-title">Run</h2>
+          <p id="side-subtitle"></p>
+        </div>
+        <div class="side-section">
+          <h3>Status</h3>
+          <div class="status"><span id="side-dot" class="dot"></span><span id="side-status"></span></div>
+        </div>
+        <div class="side-section">
+          <h3>Run Details</h3>
+          <div id="side-details" class="kv"></div>
+        </div>
+        <div class="side-section">
+          <h3>Attempts</h3>
+          <div id="side-attempts" class="kv"></div>
+        </div>
+        <div class="side-section">
+          <h3>Lineage</h3>
+          <div id="side-lineage" class="kv"><div><span>loading...</span></div></div>
+        </div>
+      </aside>
+
+      <section class="detail">
+        <div class="detail-header">
+          <div>
+            <h2 id="detail-title"></h2>
+            <p id="detail-subtitle"></p>
+          </div>
+          <div id="refresh-status" class="refresh"></div>
+        </div>
+        <nav id="tabs" class="tabs"></nav>
+        <div id="toolbar" class="toolbar"></div>
+        <div id="content" class="content"></div>
+      </section>
+    </section>
+
+    <section id="missing" class="notice" hidden></section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,20 @@
+# Solve campaign: attack a list of known problems end to end.
+# Run:   python3 pipeline.py solve campaigns/erdos_solve_example.yaml
+# Check: python3 pipeline.py status erdos_solve_example
+name: erdos_solve_example
+mode: solve
+
+model: gpt-5.5
+reasoning_effort: xhigh
+provider: ""              # "" = gpt via codex; "deepseek" = DeepSeek V4 via local bridge
+max_attempts: 5
+blind_run: 1
+verify_endpoint: http://127.0.0.1:8091/verify
+
+# Optional literature cutoff (YYYY-MM-DD). When set, runs are frozen to the
+# world at that date (noegress block + frozen_literature MCP). Leave empty off.
+literature_cutoff: ""
+
+# Problem files, relative to agents/generation/ (must live under data/).
+problems:
+  - data/example.md
