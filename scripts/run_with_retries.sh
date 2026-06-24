@@ -9,7 +9,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 GENERATION_DIR="$REPO_ROOT/agents/generation"
 
-PROBLEM_FILE="${PROBLEM_FILE:-data/discrete_geometry/unit_distance_disproof.md}"
+PROBLEM_FILE="${PROBLEM_FILE:-data/example.md}"
 PROBLEM_ID="${PROBLEM_ID:-}"
 MAX_ATTEMPTS="${MAX_ATTEMPTS:-5}"
 MODEL="${MODEL:-gpt-5.5}"

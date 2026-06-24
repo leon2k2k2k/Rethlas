@@ -6,8 +6,8 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 GENERATION_DIR="$REPO_ROOT/agents/generation"
 
-PROBLEM_FILE="${PROBLEM_FILE:-data/discrete_geometry/unit_distance_disproof.md}"
-BATCH_ID="${BATCH_ID:-discrete_geometry/unit_distance_discovery_$(date -u +%Y%m%dT%H%M%SZ)}"
+PROBLEM_FILE="${PROBLEM_FILE:-data/example.md}"
+BATCH_ID="${BATCH_ID:-discovery_$(date -u +%Y%m%dT%H%M%SZ)}"
 SAMPLES="${SAMPLES:-5}"
 PARALLEL="${PARALLEL:-2}"
 MIN_VALID_CARDS="${MIN_VALID_CARDS:-1}"

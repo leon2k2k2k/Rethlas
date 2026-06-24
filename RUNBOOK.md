@@ -38,8 +38,8 @@ promoted to `blueprint_verified.md`.
 
 ```bash
 cd ~/rethlas
-PROBLEM_FILE=data/discrete_geometry/unit_distance_disproof.md \
-PROBLEM_ID=discrete_geometry/my_run \
+PROBLEM_FILE=data/example.md \
+PROBLEM_ID=my_run \
 MAX_ATTEMPTS=1 \
 scripts/run_with_retries.sh
 ```
@@ -48,7 +48,7 @@ scripts/run_with_retries.sh
 
 | Var | Default | Meaning |
 |---|---|---|
-| `PROBLEM_FILE` | unit_distance_disproof | problem markdown under `data/` |
+| `PROBLEM_FILE` | data/example.md | problem markdown under `data/` |
 | `PROBLEM_ID` | derived from file | output id for memory/results/logs |
 | `MODEL` | `gpt-5.5` | prover model (`deepseek-v4-pro` if `PROVIDER=deepseek`) |
 | `PROVIDER` | empty (gpt) | `deepseek` routes through the bridge |
@@ -158,6 +158,3 @@ Tests (from `ui/`): `pytest` · `npm test` · `npm run e2e`.
 4. **Read** the verdict on the Verification tab; the referee's session is linked.
 5. **Iterate**: on a conditional/`wrong` blueprint, promote the missing lemma to
    a sub-problem (Routes tab tools) and recurse, or re-run with more budget.
-
-The north star and current strategy live in `notes/unit_distance_north_star.md`;
-the latest experiment write-ups are alongside it in `notes/`.
