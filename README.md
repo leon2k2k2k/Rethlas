@@ -8,6 +8,15 @@ verification-as-a-service API, the schema verdict, and the MCP tool layer are
 theirs (see `agents/` and `LICENSE`, both retained). This repository adds the
 autonomous runner around that kernel.
 
+## Driving it with an AI harness
+
+The easiest way to run this is to clone it into an AI coding harness like Claude
+Code. The repo ships a `CLAUDE.md` that teaches the harness the operating
+workflow, triage, the human-in-the-loop approval, the pool run, and the honesty
+guardrails, so the agent can drive the pipeline for you: propose what to attack,
+launch it once you sign off, and report results back. You can of course run
+every command yourself instead; the rest of this README is that manual path.
+
 ## What this runner adds on top of the kernel
 
 - **Unified CLI** (`pipeline.py`): one front door over every stage
