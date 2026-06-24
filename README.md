@@ -78,6 +78,38 @@ one path per line. Erdos is only the default example set; any domain works.
 `attempted`, `failed`. A `verified` result is a *candidate*: verifier-accepted,
 still pending human review before it counts as a real result.
 
+## Parameters
+
+Everything about a run lives in one `campaigns/*.yaml`. The pool config (sweep a
+queue of problems, several at a time, retrying each until it verifies) is the
+run shown in the [writeup](https://leon2k2k2k.github.io/posts/2026/rethlas-autonomous-erdos-pipeline/);
+its knobs are the whole control surface:
+
+```yaml
+name: erdos_pool_example
+mode: pool
+concurrency: 5            # problems attacked at once; the queue auto-advances
+model: gpt-5.5            # prover + referee model
+reasoning_effort: xhigh   # thinking depth
+max_attempts: 3           # draft -> verify -> repair cycles per problem before giving up
+provider: ""              # "" = gpt via your Codex subscription; "deepseek" = local bridge
+literature_cutoff: ""     # YYYY-MM-DD to freeze the world at a date (integrity mode); empty = off
+problems:                 # the queue (or set `queue: path/to/list.txt`, one path per line)
+  - data/erdos/erdos_708.md
+  - data/erdos/erdos_709.md
+```
+
+```bash
+python3 pipeline.py pool campaigns/erdos_pool_example.yaml --dry-run   # preview, no cost
+python3 pipeline.py pool campaigns/erdos_pool_example.yaml             # attack the queue
+python3 pipeline.py status erdos_pool_example                          # read the scoreboard
+```
+
+The same four knobs (`concurrency`, `model`, `reasoning_effort`, `max_attempts`)
+are also exposed as env vars on the lower-level single-problem entry point
+`scripts/run_with_retries.sh`; see `RUNBOOK.md` for that and the deep-run and
+width-batch regimes.
+
 ## Integrity (the frozen world)
 
 During a run the prover is sealed: `noegress.so` blocks network egress,
