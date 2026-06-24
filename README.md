@@ -1,6 +1,6 @@
 # Autonomous Rethlas Runner
 
-Clone it, point it at open math problems, and it attacks them on its own.
+Clone it, point it at open math problems, and it attacks them on its own. 
 
 Built on [Rethlas](https://github.com/frenzymath/Rethlas) by the frenzymath
 group (PKU). The two-agent generate-plus-verify kernel, the
