@@ -1,11 +1,6 @@
 # Autonomous Rethlas Runner
 
-Clone it, point it at open math problems, and it attacks them on its own. A
-generation agent writes a proof, a verification agent referees it against a
-strict schema, and the loop repairs and retries until a proof passes or the
-budget runs out. It sweeps many problems in parallel, can discover new ones to
-attack, and runs under integrity controls so a result is one it actually
-derived rather than looked up. Defaults to Erdos problems; works on any domain.
+Clone it, point it at open math problems, and it attacks them on its own.
 
 Built on [Rethlas](https://github.com/frenzymath/Rethlas) by the frenzymath
 group (PKU). The two-agent generate-plus-verify kernel, the
